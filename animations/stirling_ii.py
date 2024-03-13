@@ -1,9 +1,41 @@
+# pylint: disable=C0114, C0115, C0116
+# mn.config.disable_caching = True
+
 import manim as mn
 
-# mn.config.disable_caching = True
+
+class Bucket():
+    def __init__(self, width: int, height: int):
+        self.group = mn.VGroup()
+        self.width = width
+        self.height = height
+
+        points = [
+            [-self.width / 2, self.height / 2, 0],
+            [-self.width / 2, -self.height / 2, 0],
+            [self.width / 2, -self.height / 2, 0],
+            [self.width / 2, self.height / 2, 0],
+        ]
+        for i in range(len(points)-1):
+            line = mn.Line(
+                points[i],  # type: ignore
+                points[i+1],  # type: ignore
+                color=mn.WHITE,
+            )
+            self.group.add(line)
+
+    def get_bucket(self):
+        return self.group
+
+    def get_cell_coords(self, row: int, col: int):
+        x = self.group.get_left()[0] + col + 1/2
+        y = self.group.get_bottom()[1] + row + 1/2
+        return (x, y, 0)
 
 
 class StirlingII(mn.Scene):
+    run_animations = True
+
     def construct(self):
         # ========== CONFIG ==========
 
@@ -13,8 +45,11 @@ class StirlingII(mn.Scene):
 
         title = mn.Text("Liczby Stirlinga II rodzaju", font_size=24)
         title.to_edge(mn.UP)
-        # self.play(mn.FadeIn(title))
-        self.add(title)
+
+        if self.run_animations:
+            self.play(mn.FadeIn(title))
+        else:
+            self.add(title)
 
         # ========== TEXT ==========
 
@@ -32,49 +67,51 @@ class StirlingII(mn.Scene):
         group = mn.VGroup(formula, text)
         group.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
 
-        # self.play(mn.FadeIn(formula))
-        self.add(formula)
-
-        # self.play(mn.FadeIn(text))
-        self.add(text)
+        if self.run_animations:
+            self.play(mn.FadeIn(formula))
+            self.play(mn.FadeIn(text))
+        else:
+            self.add(formula)
+            self.add(text)
 
         # ========== COLORING ==========
 
-        formula[0][1].set_color(mn.BLUE)
-        formula[0][7].set_color(mn.BLUE)
-        text[24:42].set_color(mn.BLUE)
+        if self.run_animations:
+            for _ in range(3):
+                self.play(formula[0][1].animate.set_color(mn.WHITE),
+                          formula[0][7].animate.set_color(mn.WHITE),
+                          text[24:42].animate.set_color(mn.WHITE),
+                          run_time=0.2)
+                self.play(formula[0][1].animate.set_color(mn.BLUE),
+                          formula[0][7].animate.set_color(mn.BLUE),
+                          text[24:42].animate.set_color(mn.BLUE),
+                          run_time=0.2)
 
-        # for _ in range(5):
-        #     self.play(formula[0][1].animate.set_color(mn.WHITE),
-        #               formula[0][7].animate.set_color(mn.WHITE),
-        #               text[24:42].animate.set_color(mn.WHITE),
-        #               run_time=0.2)
-        #     self.play(formula[0][1].animate.set_color(mn.BLUE),
-        #               formula[0][7].animate.set_color(mn.BLUE),
-        #               text[24:42].animate.set_color(mn.BLUE),
-        #               run_time=0.2)
+            for _ in range(3):
+                self.play(formula[0][2].animate.set_color(mn.WHITE),
+                          formula[0][9].animate.set_color(mn.WHITE),
+                          text[44:69].animate.set_color(mn.WHITE),
+                          run_time=0.2)
+                self.play(formula[0][2].animate.set_color(mn.ORANGE),
+                          formula[0][9].animate.set_color(mn.ORANGE),
+                          text[44:69].animate.set_color(mn.ORANGE),
+                          run_time=0.2)
 
-        formula[0][2].set_color(mn.ORANGE)
-        formula[0][9].set_color(mn.ORANGE)
-        text[44:69].set_color(mn.ORANGE)
+            self.wait(1)
+        else:
+            formula[0][1].set_color(mn.BLUE)
+            formula[0][7].set_color(mn.BLUE)
+            text[24:42].set_color(mn.BLUE)
 
-        # for _ in range(5):
-        #     self.play(formula[0][2].animate.set_color(mn.WHITE),
-        #               formula[0][9].animate.set_color(mn.WHITE),
-        #               text[44:69].animate.set_color(mn.WHITE),
-        #               run_time=0.2)
-        #     self.play(formula[0][2].animate.set_color(mn.ORANGE),
-        #               formula[0][9].animate.set_color(mn.ORANGE),
-        #               text[44:69].animate.set_color(mn.ORANGE),
-        #               run_time=0.2)
-
-        # self.wait(1)
+            formula[0][2].set_color(mn.ORANGE)
+            formula[0][9].set_color(mn.ORANGE)
+            text[44:69].set_color(mn.ORANGE)
 
         # ========== CIRCLES ==========
 
+        circles = mn.VGroup()
         circle_colors = [mn.RED, mn.ORANGE, mn.YELLOW,
                          mn.GREEN, mn.BLUE, mn.PURPLE]
-        circles = mn.VGroup()
         for color in circle_colors:
             circle = mn.Circle(
                 radius=0.3,
@@ -87,38 +124,34 @@ class StirlingII(mn.Scene):
             direction=mn.DOWN,
         ).shift(mn.DOWN * 0.5)
 
-        self.add(circles)
+        if self.run_animations:
+            self.play(mn.FadeIn(circles))
+        else:
+            self.add(circles)
 
         # ========== BUCKETS ==========
 
-        buckets = mn.VGroup()
-        for _ in range(2):
-            bucket = self.create_bucket()
-            buckets.add(bucket)
+        bucket1 = Bucket(4, 2)
+        bucket2 = Bucket(4, 2)
 
-        buckets.arrange(mn.RIGHT, buff=1)
-        buckets.next_to(circles, direction=mn.DOWN).shift(mn.DOWN * 0.5)
-        self.add(buckets)
+        bucket_group = mn.VGroup(bucket1.get_bucket(), bucket2.get_bucket())
+        bucket_group.arrange(mn.RIGHT, buff=1)
+        bucket_group.next_to(circles, direction=mn.DOWN).shift(mn.DOWN * 0.5)
+
+        if self.run_animations:
+            self.play(mn.FadeIn(bucket_group))
+        else:
+            self.add(bucket_group)
 
         # ========== MOVE CIRCLES INTO BUCKETS ==========
 
-    def create_bucket(self):
-        width = 4
-        height = 2
-        points = [
-            [-width / 2, height / 2, 0],
-            [-width / 2, -height / 2, 0],
-            [width / 2, -height / 2, 0],
-            [width / 2, height / 2, 0],
-        ]
+        self.play(circles[0].animate.move_to(bucket1.get_cell_coords(0, 0)))
+        self.play(circles[1].animate.move_to(bucket1.get_cell_coords(0, 1)))
+        self.play(circles[2].animate.move_to(bucket2.get_cell_coords(0, 0)))
+        self.play(circles[3].animate.move_to(bucket1.get_cell_coords(0, 2)))
+        self.play(circles[4].animate.move_to(bucket2.get_cell_coords(0, 1)))
+        self.play(circles[5].animate.move_to(bucket1.get_cell_coords(0, 3)))
 
-        bucket = mn.VGroup()
-        for i in range(len(points)-1):
-            line = mn.Line(
-                points[i],  # type: ignore
-                points[i+1],  # type: ignore
-                color=mn.WHITE,
-            )
-            bucket.add(line)
-
-        return bucket
+        # XXX
+        self.run_animations = True
+        # XXX
