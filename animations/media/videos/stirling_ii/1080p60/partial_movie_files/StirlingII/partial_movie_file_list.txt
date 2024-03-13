@@ -1,0 +1,4 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/ushka/projects/studies/group-project-bcp/manim-project/animations/media/videos/stirling_ii/1080p60/partial_movie_files/StirlingII/3977891868_123554531_3520657065.mp4'
+file 'file:/home/ushka/projects/studies/group-project-bcp/manim-project/animations/media/videos/stirling_ii/1080p60/partial_movie_files/StirlingII/2852726489_1522504047_3367895782.mp4'
+file 'file:/home/ushka/projects/studies/group-project-bcp/manim-project/animations/media/videos/stirling_ii/1080p60/partial_movie_files/StirlingII/2852726489_1704852926_284979346.mp4'

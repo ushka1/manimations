@@ -1,0 +1,2 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/ushka/projects/studies/group-project-bcp/manim-project/animations/media/videos/stirling_i/1080p60/partial_movie_files/StirlingI/3977891868_2617016127_3583539653.mp4'
