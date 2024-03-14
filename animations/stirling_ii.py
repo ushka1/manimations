@@ -1,7 +1,8 @@
 # pylint: disable=C0114, C0115, C0116
-# mn.config.disable_caching = True
 
 import manim as mn
+
+mn.config.disable_caching = True
 
 
 class Bucket():
@@ -33,8 +34,49 @@ class Bucket():
         return (x, y, 0)
 
 
+def create_circles(colors: list[mn.ManimColor]):
+    circles = mn.VGroup()
+    for (i, c) in enumerate(colors):
+        circle = mn.Circle(
+            radius=0.3,
+        ).set_fill(c, 1).set_stroke(width=0)
+
+        # put label in the center of circle
+        label = mn.Text(str(i + 1), font_size=36, color=mn.BLACK)
+        label.move_to(circle)
+
+        circle_group = mn.VGroup(circle, label)
+        circles.add(circle_group)
+
+    circles.arrange(mn.RIGHT)
+    return circles
+
+
+stirling_partitions = [
+    [[0], [1, 2, 3, 4]],
+    [[1], [0, 2, 3, 4]],
+    [[2], [0, 1, 3, 4]],
+    [[3], [0, 1, 2, 4]],
+    [[4], [0, 1, 2, 3]],
+
+    [[0, 1], [2, 3, 4]],
+    [[0, 2], [1, 3, 4]],
+    [[0, 3], [1, 2, 4]],
+    [[0, 4], [1, 2, 3]],
+
+    [[1, 2], [0, 3, 4]],
+    [[1, 3], [0, 2, 4]],
+    [[1, 4], [0, 2, 3]],
+
+    [[2, 3], [0, 1, 4]],
+    [[2, 4], [0, 1, 3]],
+
+    [[3, 4], [0, 1, 2]],
+]
+
+
 class StirlingII(mn.Scene):
-    run_animations = False
+    run_animations = True
 
     def construct(self):
         # ========== CONFIG ==========
@@ -43,22 +85,23 @@ class StirlingII(mn.Scene):
 
         # ========== SCENES ==========
 
-        # self.first_scene()
-
-        # if self.run_animations:
-        #     self.wait(3)
-        #     self.play(mn.FadeOut(*self.mobjects))
-
-        # self.remove(*self.mobjects)
+        self.first_scene()
+        if self.run_animations:
+            self.wait(2)
+            self.play(mn.FadeOut(*self.mobjects))
+        self.remove(*self.mobjects)
 
         self.second_scene()
+        if self.run_animations:
+            self.wait(5)
+            self.play(mn.FadeOut(*self.mobjects))
+        self.remove(*self.mobjects)
 
     def second_scene(self):
-
         # ========== TITLE ==========
 
         title = mn.MathTex(
-            r"\left\{ {5 \atop 2} \right\}",
+            r"\left\{ {5 \atop 2} \right\} = 15",
             font_size=36,
         )
         title.to_edge(mn.UP)
@@ -68,51 +111,71 @@ class StirlingII(mn.Scene):
         else:
             self.add(title)
 
-        # ========== BUCKETS ==========
+        # ========== SHOW BUCKETS ==========
 
-        all_buckets: list[Bucket] = []
         group = mn.VGroup()
+        data: list[tuple[Bucket, Bucket, mn.VGroup]] = []
         for _ in range(15):
             bucket1 = Bucket(2, 4)
             bucket2 = Bucket(2, 4)
-            all_buckets.append(bucket1)
-            all_buckets.append(bucket2)
+            circles = create_circles(
+                [mn.RED, mn.ORANGE, mn.YELLOW, mn.GREEN, mn.BLUE]
+            )
+            data.append((
+                bucket1,
+                bucket2,
+                circles,
+            ))
 
-            buckets = mn.VGroup(bucket1.get_bucket(), bucket2.get_bucket())
-            buckets.arrange(mn.RIGHT, buff=1)
-            buckets.scale(0.25)
-            group.add(buckets)
+            b_group = mn.VGroup(
+                bucket1.get_bucket(),
+                bucket2.get_bucket()
+            )
+            b_group.arrange(mn.RIGHT, buff=1)
+            bc_group = mn.VGroup(circles, b_group)
+            bc_group.arrange(mn.DOWN, buff=0.5)
+            group.add(bc_group)
 
-        group.arrange_in_grid(5, 3, buff=(2, 0.75))
-        group.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
-        self.add(group)
+        group.scale(0.3)
+        group.arrange_in_grid(5, 3, buff=(2, 0.3))
+        group.next_to(title, mn.DOWN)
+
+        if self.run_animations:
+            self.play(mn.FadeIn(group))
+            self.wait(1)
+        else:
+            self.add(group)
+
+        # ========== PLACEMENT ==========
+
+        animations: list[mn.Animation] = []
+        for e in zip(data, stirling_partitions):
+            circles = e[0][2]
+            bucket1 = e[0][0]
+            bucket2 = e[0][1]
+            part1 = e[1][0]
+            part2 = e[1][1]
+            i1 = 0
+            i2 = 0
+            for (i, c) in enumerate(circles):
+                if i in part1:
+                    animations.append(
+                        c.animate.move_to(bucket1.get_cell_coords(0, i1))
+                    )
+                    i1 += 1
+                else:
+                    animations.append(
+                        c.animate.move_to(bucket2.get_cell_coords(0, i2))
+                    )
+                    i2 += 1
+
+        if self.run_animations:
+            self.play(mn.AnimationGroup(*animations, lag_ratio=0.025))
+        else:
+            for a in animations:
+                a.mobject.move_to(a.mobject.target)
 
         # ========== CIRCLES ==========
-
-        circles = mn.VGroup()
-        circle_colors = [mn.RED, mn.ORANGE, mn.YELLOW,
-                         mn.GREEN, mn.BLUE, mn.PURPLE]
-        for color in circle_colors:
-            circle = mn.Circle(
-                radius=0.3,
-            ).set_fill(color, 1).set_stroke(width=0)
-            circles.add(circle)
-
-        circles.arrange(mn.RIGHT)
-        circles.next_to(
-            title,
-            direction=mn.DOWN,
-        ).shift(mn.DOWN * 0.5)
-        self.add(circles)
-
-        circles.scale(0.25)
-
-        circles[0].move_to(all_buckets[0].get_cell_coords(0, 0))
-        circles[1].move_to(all_buckets[0].get_cell_coords(0, 1))
-        circles[2].move_to(all_buckets[0].get_cell_coords(0, 2))
-        circles[3].move_to(all_buckets[0].get_cell_coords(0, 3))
-        circles[4].move_to(all_buckets[0].get_cell_coords(1, 0))
-        circles[5].move_to(all_buckets[0].get_cell_coords(1, 1))
 
     def first_scene(self):
         # ========== TITLE ==========
@@ -167,16 +230,8 @@ class StirlingII(mn.Scene):
 
         # ========== CIRCLES ==========
 
-        circles = mn.VGroup()
-        circle_colors = [mn.RED, mn.ORANGE, mn.YELLOW,
-                         mn.GREEN, mn.BLUE, mn.PURPLE]
-        for color in circle_colors:
-            circle = mn.Circle(
-                radius=0.3,
-            ).set_fill(color, 1).set_stroke(width=0)
-            circles.add(circle)
-
-        circles.arrange(mn.RIGHT)
+        circles = create_circles([mn.RED, mn.ORANGE, mn.YELLOW,
+                                  mn.GREEN, mn.BLUE, mn.PURPLE])
         circles.next_to(
             group,
             direction=mn.DOWN,
@@ -221,24 +276,30 @@ class StirlingII(mn.Scene):
         # ========== PLACEMENT ==========
 
         if self.run_animations:
-            self.play(circles[0].animate.move_to(
-                bucket1.get_cell_coords(0, 0)
-            ))
-            self.play(circles[1].animate.move_to(
-                bucket1.get_cell_coords(0, 1)
-            ))
-            self.play(circles[2].animate.move_to(
-                bucket2.get_cell_coords(0, 0)
-            ))
-            self.play(circles[3].animate.move_to(
-                bucket1.get_cell_coords(0, 2)
-            ))
-            self.play(circles[4].animate.move_to(
-                bucket2.get_cell_coords(0, 1)
-            ))
-            self.play(circles[5].animate.move_to(
-                bucket1.get_cell_coords(0, 3)
-            ))
+            self.play(
+                mn.AnimationGroup(
+                    circles[0].animate.move_to(
+                        bucket1.get_cell_coords(0, 0)
+                    ),
+                    circles[1].animate.move_to(
+                        bucket1.get_cell_coords(0, 1)
+                    ),
+                    circles[2].animate.move_to(
+                        bucket2.get_cell_coords(0, 0)
+                    ),
+                    circles[3].animate.move_to(
+                        bucket1.get_cell_coords(0, 2)
+                    ),
+                    circles[4].animate.move_to(
+                        bucket2.get_cell_coords(0, 1)
+                    ),
+                    circles[5].animate.move_to(
+                        bucket1.get_cell_coords(0, 3)
+                    ),
+                    lag_ratio=0.1
+                )
+            )
+            self.wait(1)
         else:
             circles[0].move_to(bucket1.get_cell_coords(0, 0))
             circles[1].move_to(bucket1.get_cell_coords(0, 1))
