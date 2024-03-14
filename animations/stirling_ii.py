@@ -5,42 +5,116 @@ import manim as mn
 
 
 class Bucket():
-    def __init__(self, width: int, height: int):
-        self.group = mn.VGroup()
-        self.width = width
-        self.height = height
+    def __init__(self, rows: int, cols: int):
+        self.rows = rows
+        self.cols = cols
 
+        width = cols
+        height = rows
         points = [
-            [-self.width / 2, self.height / 2, 0],
-            [-self.width / 2, -self.height / 2, 0],
-            [self.width / 2, -self.height / 2, 0],
-            [self.width / 2, self.height / 2, 0],
+            [-width / 2, height / 2, 0],
+            [-width / 2, -height / 2, 0],
+            [width / 2, -height / 2, 0],
+            [width / 2, height / 2, 0],
+            [width / 2, -height / 2, 0],
+            [-width / 2, -height / 2, 0],
+            [-width / 2, height / 2, 0],
         ]
-        for i in range(len(points)-1):
-            line = mn.Line(
-                points[i],  # type: ignore
-                points[i+1],  # type: ignore
-                color=mn.WHITE,
-            )
-            self.group.add(line)
+        self.polygon = mn.Polygon(*points, color=mn.WHITE)  # type: ignore
 
     def get_bucket(self):
-        return self.group
+        return self.polygon
 
     def get_cell_coords(self, row: int, col: int):
-        x = self.group.get_left()[0] + col + 1/2
-        y = self.group.get_bottom()[1] + row + 1/2
+        col_width = self.polygon.width / self.cols
+        row_height = self.polygon.height / self.rows
+        x = self.polygon.get_left()[0] + (col + 1/2) * col_width
+        y = self.polygon.get_bottom()[1] + (row + 1/2) * row_height
         return (x, y, 0)
 
 
 class StirlingII(mn.Scene):
-    run_animations = True
+    run_animations = False
 
     def construct(self):
         # ========== CONFIG ==========
 
         mn.Text.set_default(font="Roboto", font_size=16)
 
+        # ========== SCENES ==========
+
+        # self.first_scene()
+
+        # if self.run_animations:
+        #     self.wait(3)
+        #     self.play(mn.FadeOut(*self.mobjects))
+
+        # self.remove(*self.mobjects)
+
+        self.second_scene()
+
+    def second_scene(self):
+
+        # ========== TITLE ==========
+
+        title = mn.MathTex(
+            r"\left\{ {5 \atop 2} \right\}",
+            font_size=36,
+        )
+        title.to_edge(mn.UP)
+
+        if self.run_animations:
+            self.play(mn.FadeIn(title))
+        else:
+            self.add(title)
+
+        # ========== BUCKETS ==========
+
+        all_buckets: list[Bucket] = []
+        group = mn.VGroup()
+        for _ in range(15):
+            bucket1 = Bucket(2, 4)
+            bucket2 = Bucket(2, 4)
+            all_buckets.append(bucket1)
+            all_buckets.append(bucket2)
+
+            buckets = mn.VGroup(bucket1.get_bucket(), bucket2.get_bucket())
+            buckets.arrange(mn.RIGHT, buff=1)
+            buckets.scale(0.25)
+            group.add(buckets)
+
+        group.arrange_in_grid(5, 3, buff=(2, 0.75))
+        group.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
+        self.add(group)
+
+        # ========== CIRCLES ==========
+
+        circles = mn.VGroup()
+        circle_colors = [mn.RED, mn.ORANGE, mn.YELLOW,
+                         mn.GREEN, mn.BLUE, mn.PURPLE]
+        for color in circle_colors:
+            circle = mn.Circle(
+                radius=0.3,
+            ).set_fill(color, 1).set_stroke(width=0)
+            circles.add(circle)
+
+        circles.arrange(mn.RIGHT)
+        circles.next_to(
+            title,
+            direction=mn.DOWN,
+        ).shift(mn.DOWN * 0.5)
+        self.add(circles)
+
+        circles.scale(0.25)
+
+        circles[0].move_to(all_buckets[0].get_cell_coords(0, 0))
+        circles[1].move_to(all_buckets[0].get_cell_coords(0, 1))
+        circles[2].move_to(all_buckets[0].get_cell_coords(0, 2))
+        circles[3].move_to(all_buckets[0].get_cell_coords(0, 3))
+        circles[4].move_to(all_buckets[0].get_cell_coords(1, 0))
+        circles[5].move_to(all_buckets[0].get_cell_coords(1, 1))
+
+    def first_scene(self):
         # ========== TITLE ==========
 
         title = mn.Text("Liczby Stirlinga II rodzaju", font_size=24)
@@ -132,8 +206,8 @@ class StirlingII(mn.Scene):
 
         # ========== BUCKETS ==========
 
-        bucket1 = Bucket(4, 2)
-        bucket2 = Bucket(4, 2)
+        bucket1 = Bucket(2, 4)
+        bucket2 = Bucket(2, 4)
 
         bucket_group = mn.VGroup(bucket1.get_bucket(), bucket2.get_bucket())
         bucket_group.arrange(mn.RIGHT, buff=1)
@@ -183,11 +257,16 @@ class StirlingII(mn.Scene):
         bucket1.get_bucket().add(circles[5])  # type: ignore
 
         if self.run_animations:
-            self.play(bucket1.get_bucket().animate.shift(mn.RIGHT * (bucket1.width + 1)),
-                      bucket2.get_bucket().animate.shift(mn.LEFT * (bucket1.width + 1)))
+            self.play(bucket1.get_bucket().animate.shift(
+                mn.RIGHT * (bucket1.get_bucket().width + 1)
+            ),
+                bucket2.get_bucket().animate.shift(
+                mn.LEFT * (bucket1.get_bucket().width + 1)
+            ))
             self.wait(0.5)
-            self.play(bucket2.get_bucket().animate.shift(mn.RIGHT * (bucket1.width + 1)),
-                      bucket1.get_bucket().animate.shift(mn.LEFT * (bucket1.width + 1)))
-
-        if self.run_animations:
-            self.wait(3)
+            self.play(bucket2.get_bucket().animate.shift(
+                mn.RIGHT * (bucket1.get_bucket().width + 1)
+            ),
+                bucket1.get_bucket().animate.shift(
+                mn.LEFT * (bucket1.get_bucket().width + 1)
+            ))
