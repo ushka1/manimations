@@ -74,7 +74,7 @@ class StirlingII(mn.Scene):
             self.add(formula)
             self.add(text)
 
-        # ========== COLORING ==========
+        # ========== HIGHLIGHT - CIRCLES ==========
 
         if self.run_animations:
             for _ in range(3):
@@ -86,26 +86,10 @@ class StirlingII(mn.Scene):
                           formula[0][7].animate.set_color(mn.BLUE),
                           text[24:42].animate.set_color(mn.BLUE),
                           run_time=0.2)
-
-            for _ in range(3):
-                self.play(formula[0][2].animate.set_color(mn.WHITE),
-                          formula[0][9].animate.set_color(mn.WHITE),
-                          text[44:69].animate.set_color(mn.WHITE),
-                          run_time=0.2)
-                self.play(formula[0][2].animate.set_color(mn.ORANGE),
-                          formula[0][9].animate.set_color(mn.ORANGE),
-                          text[44:69].animate.set_color(mn.ORANGE),
-                          run_time=0.2)
-
-            self.wait(1)
         else:
             formula[0][1].set_color(mn.BLUE)
             formula[0][7].set_color(mn.BLUE)
             text[24:42].set_color(mn.BLUE)
-
-            formula[0][2].set_color(mn.ORANGE)
-            formula[0][9].set_color(mn.ORANGE)
-            text[44:69].set_color(mn.ORANGE)
 
         # ========== CIRCLES ==========
 
@@ -129,6 +113,23 @@ class StirlingII(mn.Scene):
         else:
             self.add(circles)
 
+        # ========== HIGHLIGHT - BUCKETS ==========
+
+        if self.run_animations:
+            for _ in range(3):
+                self.play(formula[0][2].animate.set_color(mn.WHITE),
+                          formula[0][9].animate.set_color(mn.WHITE),
+                          text[44:69].animate.set_color(mn.WHITE),
+                          run_time=0.2)
+                self.play(formula[0][2].animate.set_color(mn.ORANGE),
+                          formula[0][9].animate.set_color(mn.ORANGE),
+                          text[44:69].animate.set_color(mn.ORANGE),
+                          run_time=0.2)
+        else:
+            formula[0][2].set_color(mn.ORANGE)
+            formula[0][9].set_color(mn.ORANGE)
+            text[44:69].set_color(mn.ORANGE)
+
         # ========== BUCKETS ==========
 
         bucket1 = Bucket(4, 2)
@@ -143,15 +144,50 @@ class StirlingII(mn.Scene):
         else:
             self.add(bucket_group)
 
-        # ========== MOVE CIRCLES INTO BUCKETS ==========
+        # ========== PLACEMENT ==========
 
-        self.play(circles[0].animate.move_to(bucket1.get_cell_coords(0, 0)))
-        self.play(circles[1].animate.move_to(bucket1.get_cell_coords(0, 1)))
-        self.play(circles[2].animate.move_to(bucket2.get_cell_coords(0, 0)))
-        self.play(circles[3].animate.move_to(bucket1.get_cell_coords(0, 2)))
-        self.play(circles[4].animate.move_to(bucket2.get_cell_coords(0, 1)))
-        self.play(circles[5].animate.move_to(bucket1.get_cell_coords(0, 3)))
+        if self.run_animations:
+            self.play(circles[0].animate.move_to(
+                bucket1.get_cell_coords(0, 0)
+            ))
+            self.play(circles[1].animate.move_to(
+                bucket1.get_cell_coords(0, 1)
+            ))
+            self.play(circles[2].animate.move_to(
+                bucket2.get_cell_coords(0, 0)
+            ))
+            self.play(circles[3].animate.move_to(
+                bucket1.get_cell_coords(0, 2)
+            ))
+            self.play(circles[4].animate.move_to(
+                bucket2.get_cell_coords(0, 1)
+            ))
+            self.play(circles[5].animate.move_to(
+                bucket1.get_cell_coords(0, 3)
+            ))
+        else:
+            circles[0].move_to(bucket1.get_cell_coords(0, 0))
+            circles[1].move_to(bucket1.get_cell_coords(0, 1))
+            circles[2].move_to(bucket2.get_cell_coords(0, 0))
+            circles[3].move_to(bucket1.get_cell_coords(0, 2))
+            circles[4].move_to(bucket2.get_cell_coords(0, 1))
+            circles[5].move_to(bucket1.get_cell_coords(0, 3))
 
-        # XXX
-        self.run_animations = True
-        # XXX
+        # ========== BUCKETS SHIFT ==========
+
+        bucket1.get_bucket().add(circles[0])  # type: ignore
+        bucket1.get_bucket().add(circles[1])  # type: ignore
+        bucket2.get_bucket().add(circles[2])  # type: ignore
+        bucket1.get_bucket().add(circles[3])  # type: ignore
+        bucket2.get_bucket().add(circles[4])  # type: ignore
+        bucket1.get_bucket().add(circles[5])  # type: ignore
+
+        if self.run_animations:
+            self.play(bucket1.get_bucket().animate.shift(mn.RIGHT * (bucket1.width + 1)),
+                      bucket2.get_bucket().animate.shift(mn.LEFT * (bucket1.width + 1)))
+            self.wait(0.5)
+            self.play(bucket2.get_bucket().animate.shift(mn.RIGHT * (bucket1.width + 1)),
+                      bucket1.get_bucket().animate.shift(mn.LEFT * (bucket1.width + 1)))
+
+        if self.run_animations:
+            self.wait(3)
