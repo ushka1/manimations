@@ -3,7 +3,7 @@
 import manim as mn
 import numpy as np
 
-mn.config.disable_caching = True
+# mn.config.disable_caching = True
 
 
 class Cycle():
@@ -26,23 +26,22 @@ class Cycle():
         return cells
 
 
-def create_circles(colors: list[mn.ManimColor]):
-    circles = mn.VGroup()
-    for (i, c) in enumerate(colors):
-        circle = mn.Circle(
+def create_balls(colors: list[mn.ManimColor]):
+    balls = mn.VGroup()
+    for (i, color) in enumerate(colors):
+        ball = mn.Circle(
             radius=0.3,
-        ).set_fill(c, 1).set_stroke(width=0)
+        ).set_fill(color, 1).set_stroke(width=0)
 
-        # put label in the center of circle
         label = mn.Text(str(i + 1), font_size=36, color=mn.BLACK)
-        label.move_to(circle)
+        label.move_to(ball)
 
-        circle_group = mn.VGroup(circle, label)
-        circle_group.set_z_index(1)
-        circles.add(circle_group)
+        group = mn.VGroup(ball, label)
+        group.set_z_index(1)
+        balls.add(group)
 
-    circles.arrange(mn.RIGHT)
-    return circles
+    balls.arrange(mn.RIGHT)
+    return balls
 
 
 stirling_partitions = [
@@ -97,21 +96,19 @@ class StirlingI(mn.Scene):
         else:
             self.add(title)
 
-        # ========== TEXT ==========
+        # ========== FORMULA TEXT ==========
 
         formula = mn.MathTex(
             r"\begin{bmatrix} \ n \ \\ \ k \ \end{bmatrix} = c(n,k)",
             font_size=36,
         )
+        formula.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
 
         text = mn.Text(
             "Jest to liczba sposobów zorganizowania n rozróżnialnych kul w k nierozróżnialnych cyklach.",
             font_size=18
         )
         text.next_to(formula, mn.DOWN)
-
-        group = mn.VGroup(formula, text)
-        group.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
 
         if self.run_animations:
             self.play(mn.FadeIn(formula))
@@ -120,7 +117,7 @@ class StirlingI(mn.Scene):
             self.add(formula)
             self.add(text)
 
-        # ========== HIGHLIGHT - CIRCLES ==========
+        # ========== HIGHLIGHT BALLS TEXT ==========
 
         if self.run_animations:
             for _ in range(3):
@@ -137,21 +134,18 @@ class StirlingI(mn.Scene):
             formula[0][7].set_color(mn.BLUE)
             text[34:52].set_color(mn.BLUE)
 
-        # ========== CIRCLES ==========
+        # ========== BALLS ==========
 
-        circles = create_circles([mn.RED, mn.ORANGE, mn.YELLOW,
-                                  mn.GREEN, mn.BLUE, mn.PURPLE])
-        circles.next_to(
-            group,
-            direction=mn.DOWN,
-        ).shift(mn.DOWN * 0.5)
+        balls = create_balls([mn.RED, mn.ORANGE, mn.YELLOW,
+                              mn.GREEN, mn.BLUE, mn.PURPLE])
+        balls.next_to(text, direction=mn.DOWN,).shift(mn.DOWN * 0.5)
 
         if self.run_animations:
-            self.play(mn.FadeIn(circles))
+            self.play(mn.FadeIn(balls))
         else:
-            self.add(circles)
+            self.add(balls)
 
-        # ========== HIGHLIGHT - CYCLES ==========
+        # ========== HIGHLIGHT CYCLES TEXT ==========
 
         if self.run_animations:
             for _ in range(3):
@@ -173,51 +167,49 @@ class StirlingI(mn.Scene):
         cycle1 = Cycle(1)
         cycle2 = Cycle(1)
 
-        cycle_group = mn.VGroup(cycle1.get_cycle(), cycle2.get_cycle())
-        cycle_group.arrange(mn.RIGHT, buff=2)
-        cycle_group.next_to(circles, direction=mn.DOWN).shift(mn.DOWN * 0.5)
+        cycles_group = mn.VGroup(cycle1.get_cycle(), cycle2.get_cycle())
+        cycles_group.arrange(mn.RIGHT, buff=2)
+        cycles_group.next_to(balls, direction=mn.DOWN).shift(mn.DOWN * 0.5)
 
         if self.run_animations:
-            self.play(mn.FadeIn(cycle_group))
+            self.play(mn.FadeIn(cycles_group))
         else:
-            self.add(cycle_group)
+            self.add(cycles_group)
 
-        # # ========== PLACEMENT ==========
+        # ========== BALLS PLACEMENT ==========
 
         cells1 = cycle1.get_cell_coords(4)
         cells2 = cycle2.get_cell_coords(2)
 
-        print(cells1)
-
         if self.run_animations:
             self.play(
                 mn.AnimationGroup(
-                    circles[0].animate.move_to(cells1[0]),
-                    circles[1].animate.move_to(cells1[1]),
-                    circles[2].animate.move_to(cells2[0]),
-                    circles[3].animate.move_to(cells1[2]),
-                    circles[4].animate.move_to(cells2[1]),
-                    circles[5].animate.move_to(cells1[3]),
+                    balls[0].animate.move_to(cells1[0]),
+                    balls[1].animate.move_to(cells1[1]),
+                    balls[2].animate.move_to(cells2[0]),
+                    balls[3].animate.move_to(cells1[2]),
+                    balls[4].animate.move_to(cells2[1]),
+                    balls[5].animate.move_to(cells1[3]),
                     lag_ratio=0.1
                 )
             )
             self.wait(1)
         else:
-            circles[0].move_to(cells1[0])
-            circles[1].move_to(cells1[1])
-            circles[2].move_to(cells2[0])
-            circles[3].move_to(cells1[2])
-            circles[4].move_to(cells2[1])
-            circles[5].move_to(cells1[3])
+            balls[0].move_to(cells1[0])
+            balls[1].move_to(cells1[1])
+            balls[2].move_to(cells2[0])
+            balls[3].move_to(cells1[2])
+            balls[4].move_to(cells2[1])
+            balls[5].move_to(cells1[3])
 
-        # # ========== CYCLES SHIFT ==========
+        # ========== CYCLES SHIFT ROTATE SHIFT ==========
 
-        cycle1.get_cycle().add(circles[0])  # type: ignore
-        cycle1.get_cycle().add(circles[1])  # type: ignore
-        cycle2.get_cycle().add(circles[2])  # type: ignore
-        cycle1.get_cycle().add(circles[3])  # type: ignore
-        cycle2.get_cycle().add(circles[4])  # type: ignore
-        cycle1.get_cycle().add(circles[5])  # type: ignore
+        cycle1.get_cycle().add(balls[0])  # type: ignore
+        cycle1.get_cycle().add(balls[1])  # type: ignore
+        cycle2.get_cycle().add(balls[2])  # type: ignore
+        cycle1.get_cycle().add(balls[3])  # type: ignore
+        cycle2.get_cycle().add(balls[4])  # type: ignore
+        cycle1.get_cycle().add(balls[5])  # type: ignore
 
         if self.run_animations:
             self.play(
@@ -258,28 +250,28 @@ class StirlingI(mn.Scene):
         else:
             self.add(title)
 
-        # ========== SHOW BUCKETS ==========
+        # ========== BALLS CYCLES ==========
 
         group = mn.VGroup()
         data: list[tuple[Cycle, Cycle, mn.VGroup]] = []
         for _ in range(11):
-            bucket1 = Cycle(1)
-            bucket2 = Cycle(1)
-            circles = create_circles(
+            cycle1 = Cycle(1)
+            cycle2 = Cycle(1)
+            balls = create_balls(
                 [mn.RED,  mn.YELLOW, mn.GREEN, mn.BLUE]
             )
             data.append((
-                bucket1,
-                bucket2,
-                circles,
+                cycle1,
+                cycle2,
+                balls,
             ))
 
             b_group = mn.VGroup(
-                bucket1.get_cycle(),
-                bucket2.get_cycle()
+                cycle1.get_cycle(),
+                cycle2.get_cycle()
             )
             b_group.arrange(mn.RIGHT, buff=1)
-            bc_group = mn.VGroup(circles, b_group)
+            bc_group = mn.VGroup(balls, b_group)
             bc_group.arrange(mn.DOWN, buff=0.5)
             group.add(bc_group)
 
@@ -293,26 +285,30 @@ class StirlingI(mn.Scene):
         else:
             self.add(group)
 
-        # ========== PLACEMENT ==========
+        # ========== BALLS PLACEMENT ==========
 
         animations: list[mn.Animation] = []
-        for e in zip(data, stirling_partitions):
-            circles = e[0][2]
-            part1 = e[1][0]
-            part2 = e[1][1]
-            cells1 = e[0][0].get_cell_coords(len(part1))
-            cells2 = e[0][1].get_cell_coords(len(part2))
+        for x in zip(data, stirling_partitions):
+            part1 = x[1][0]
+            part2 = x[1][1]
             i1 = 0
             i2 = 0
-            for (i, c) in enumerate(circles):
+
+            cycle1 = x[0][0]
+            cycle2 = x[0][1]
+            balls = x[0][2]
+            cells1 = cycle1.get_cell_coords(len(part1))
+            cells2 = cycle2.get_cell_coords(len(part2))
+
+            for (i, b) in enumerate(balls):
                 if i in part1:
                     animations.append(
-                        c.animate.move_to(cells1[i1])
+                        b.animate.move_to(cells1[i1])
                     )
                     i1 += 1
                 else:
                     animations.append(
-                        c.animate.move_to(cells2[i2])
+                        b.animate.move_to(cells2[i2])
                     )
                     i2 += 1
 

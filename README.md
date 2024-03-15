@@ -1,9 +1,9 @@
 # Manim Project
 
-- Rozmieszczenia
-- Współczynniki dwumianowe
-- Liczby Stirlinga I rodzaju
-- Liczby Stirlinga II rodzaju
-- Zasada włączeń i wyłączeń
-- Wielomiany szachowe 1
-- Wielomiany szachowe 2
+- Stirling numbers of the first kind
+- Stirling numbers of the second kind
+- Rook polynomials 1 - usage
+- Rook polynomials 2 - solving techniques
+
+<!-- - Principle of inclusions and exclusions -->
+<!-- - Permutations with repetitions -->

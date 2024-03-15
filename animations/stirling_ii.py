@@ -2,7 +2,7 @@
 
 import manim as mn
 
-mn.config.disable_caching = True
+# mn.config.disable_caching = True
 
 
 class Bucket():
@@ -34,22 +34,22 @@ class Bucket():
         return (x, y, 0)
 
 
-def create_circles(colors: list[mn.ManimColor]):
-    circles = mn.VGroup()
-    for (i, c) in enumerate(colors):
-        circle = mn.Circle(
+def create_balls(colors: list[mn.ManimColor]):
+    balls = mn.VGroup()
+    for (i, color) in enumerate(colors):
+        ball = mn.Circle(
             radius=0.3,
-        ).set_fill(c, 1).set_stroke(width=0)
+        ).set_fill(color, 1).set_stroke(width=0)
 
-        # put label in the center of circle
         label = mn.Text(str(i + 1), font_size=36, color=mn.BLACK)
-        label.move_to(circle)
+        label.move_to(ball)
 
-        circle_group = mn.VGroup(circle, label)
-        circles.add(circle_group)
+        group = mn.VGroup(ball, label)
+        group.set_z_index(1)
+        balls.add(group)
 
-    circles.arrange(mn.RIGHT)
-    return circles
+    balls.arrange(mn.RIGHT)
+    return balls
 
 
 stirling_partitions = [
@@ -108,21 +108,19 @@ class StirlingII(mn.Scene):
         else:
             self.add(title)
 
-        # ========== TEXT ==========
+        # ========== FORMULA TEXT ==========
 
         formula = mn.MathTex(
             r"\left\{ {n \atop k} \right\} = S(n,k)",
             font_size=36,
         )
+        formula.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
 
         text = mn.Text(
             "Jest to liczba rozmieszczeń n rozróżnialnych kul na k nierozróżnialnych stosach.",
             font_size=18
         )
         text.next_to(formula, mn.DOWN)
-
-        group = mn.VGroup(formula, text)
-        group.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
 
         if self.run_animations:
             self.play(mn.FadeIn(formula))
@@ -131,7 +129,7 @@ class StirlingII(mn.Scene):
             self.add(formula)
             self.add(text)
 
-        # ========== HIGHLIGHT - CIRCLES ==========
+        # ========== HIGHLIGHT BALLS TEXT ==========
 
         if self.run_animations:
             for _ in range(3):
@@ -148,21 +146,18 @@ class StirlingII(mn.Scene):
             formula[0][7].set_color(mn.BLUE)
             text[24:42].set_color(mn.BLUE)
 
-        # ========== CIRCLES ==========
+        # ========== BALLS ==========
 
-        circles = create_circles([mn.RED, mn.ORANGE, mn.YELLOW,
-                                  mn.GREEN, mn.BLUE, mn.PURPLE])
-        circles.next_to(
-            group,
-            direction=mn.DOWN,
-        ).shift(mn.DOWN * 0.5)
+        balls = create_balls([mn.RED, mn.ORANGE, mn.YELLOW,
+                              mn.GREEN, mn.BLUE, mn.PURPLE])
+        balls.next_to(text, direction=mn.DOWN,).shift(mn.DOWN * 0.5)
 
         if self.run_animations:
-            self.play(mn.FadeIn(circles))
+            self.play(mn.FadeIn(balls))
         else:
-            self.add(circles)
+            self.add(balls)
 
-        # ========== HIGHLIGHT - BUCKETS ==========
+        # ========== HIGHLIGHT BUCKETS ==========
 
         if self.run_animations:
             for _ in range(3):
@@ -186,34 +181,34 @@ class StirlingII(mn.Scene):
 
         bucket_group = mn.VGroup(bucket1.get_bucket(), bucket2.get_bucket())
         bucket_group.arrange(mn.RIGHT, buff=1)
-        bucket_group.next_to(circles, direction=mn.DOWN).shift(mn.DOWN * 0.5)
+        bucket_group.next_to(balls, direction=mn.DOWN).shift(mn.DOWN * 0.5)
 
         if self.run_animations:
             self.play(mn.FadeIn(bucket_group))
         else:
             self.add(bucket_group)
 
-        # ========== PLACEMENT ==========
+        # ========== BALLS PLACEMENT ==========
 
         if self.run_animations:
             self.play(
                 mn.AnimationGroup(
-                    circles[0].animate.move_to(
+                    balls[0].animate.move_to(
                         bucket1.get_cell_coords(0, 0)
                     ),
-                    circles[1].animate.move_to(
+                    balls[1].animate.move_to(
                         bucket1.get_cell_coords(0, 1)
                     ),
-                    circles[2].animate.move_to(
+                    balls[2].animate.move_to(
                         bucket2.get_cell_coords(0, 0)
                     ),
-                    circles[3].animate.move_to(
+                    balls[3].animate.move_to(
                         bucket1.get_cell_coords(0, 2)
                     ),
-                    circles[4].animate.move_to(
+                    balls[4].animate.move_to(
                         bucket2.get_cell_coords(0, 1)
                     ),
-                    circles[5].animate.move_to(
+                    balls[5].animate.move_to(
                         bucket1.get_cell_coords(0, 3)
                     ),
                     lag_ratio=0.1
@@ -221,21 +216,21 @@ class StirlingII(mn.Scene):
             )
             self.wait(1)
         else:
-            circles[0].move_to(bucket1.get_cell_coords(0, 0))
-            circles[1].move_to(bucket1.get_cell_coords(0, 1))
-            circles[2].move_to(bucket2.get_cell_coords(0, 0))
-            circles[3].move_to(bucket1.get_cell_coords(0, 2))
-            circles[4].move_to(bucket2.get_cell_coords(0, 1))
-            circles[5].move_to(bucket1.get_cell_coords(0, 3))
+            balls[0].move_to(bucket1.get_cell_coords(0, 0))
+            balls[1].move_to(bucket1.get_cell_coords(0, 1))
+            balls[2].move_to(bucket2.get_cell_coords(0, 0))
+            balls[3].move_to(bucket1.get_cell_coords(0, 2))
+            balls[4].move_to(bucket2.get_cell_coords(0, 1))
+            balls[5].move_to(bucket1.get_cell_coords(0, 3))
 
         # ========== BUCKETS SHIFT ==========
 
-        bucket1.get_bucket().add(circles[0])  # type: ignore
-        bucket1.get_bucket().add(circles[1])  # type: ignore
-        bucket2.get_bucket().add(circles[2])  # type: ignore
-        bucket1.get_bucket().add(circles[3])  # type: ignore
-        bucket2.get_bucket().add(circles[4])  # type: ignore
-        bucket1.get_bucket().add(circles[5])  # type: ignore
+        bucket1.get_bucket().add(balls[0])  # type: ignore
+        bucket1.get_bucket().add(balls[1])  # type: ignore
+        bucket2.get_bucket().add(balls[2])  # type: ignore
+        bucket1.get_bucket().add(balls[3])  # type: ignore
+        bucket2.get_bucket().add(balls[4])  # type: ignore
+        bucket1.get_bucket().add(balls[5])  # type: ignore
 
         if self.run_animations:
             self.play(bucket1.get_bucket().animate.shift(
@@ -266,20 +261,20 @@ class StirlingII(mn.Scene):
         else:
             self.add(title)
 
-        # ========== SHOW BUCKETS ==========
+        # ========== BUCKETS ==========
 
         group = mn.VGroup()
         data: list[tuple[Bucket, Bucket, mn.VGroup]] = []
         for _ in range(15):
             bucket1 = Bucket(2, 4)
             bucket2 = Bucket(2, 4)
-            circles = create_circles(
+            balls = create_balls(
                 [mn.RED, mn.ORANGE, mn.YELLOW, mn.GREEN, mn.BLUE]
             )
             data.append((
                 bucket1,
                 bucket2,
-                circles,
+                balls,
             ))
 
             b_group = mn.VGroup(
@@ -287,7 +282,7 @@ class StirlingII(mn.Scene):
                 bucket2.get_bucket()
             )
             b_group.arrange(mn.RIGHT, buff=1)
-            bc_group = mn.VGroup(circles, b_group)
+            bc_group = mn.VGroup(balls, b_group)
             bc_group.arrange(mn.DOWN, buff=0.5)
             group.add(bc_group)
 
@@ -301,26 +296,28 @@ class StirlingII(mn.Scene):
         else:
             self.add(group)
 
-        # ========== PLACEMENT ==========
+        # ========== BALLS PLACEMENT ==========
 
         animations: list[mn.Animation] = []
         for e in zip(data, stirling_partitions):
-            circles = e[0][2]
-            bucket1 = e[0][0]
-            bucket2 = e[0][1]
             part1 = e[1][0]
-            part2 = e[1][1]
+            # part2 = e[1][1]
             i1 = 0
             i2 = 0
-            for (i, c) in enumerate(circles):
+
+            bucket1 = e[0][0]
+            bucket2 = e[0][1]
+            balls = e[0][2]
+
+            for (i, b) in enumerate(balls):
                 if i in part1:
                     animations.append(
-                        c.animate.move_to(bucket1.get_cell_coords(0, i1))
+                        b.animate.move_to(bucket1.get_cell_coords(0, i1))
                     )
                     i1 += 1
                 else:
                     animations.append(
-                        c.animate.move_to(bucket2.get_cell_coords(0, i2))
+                        b.animate.move_to(bucket2.get_cell_coords(0, i2))
                     )
                     i2 += 1
 
