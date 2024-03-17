@@ -6,9 +6,10 @@
 - Stirling numbers of the second kind
 - Forbidden configurations
 - Rook polynomials 1 - definition & usage
-- Rook polynomials 2 - solving techniques
-<!-- - Principle of inclusions and exclusions -->
-<!-- - Permutations with repetitions -->
+- Rook polynomials 2 - row/column swaps
+- Rook polynomials 3 - disjoint boards
+- Rook polynomials 4 - row-column removal
+<!-- - Rook polynomials 5 - highest factor calculated by usage of complement board -->
 
 ## Rendering
 
