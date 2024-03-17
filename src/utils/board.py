@@ -1,3 +1,5 @@
+# pylint: disable=C0114, C0115, C0116
+
 import manim as mn
 
 
@@ -33,30 +35,25 @@ class Board():
             rook.move_to(square)
             square.add(rook)
 
-    def forbid_squares(self, positions):
+    def fill_squares(self, positions, color: mn.ManimColor, opacity=1):
         for (row, col) in positions:
             i = row * self.cols + col
             if len(self.group) <= i:
                 continue
 
             square = self.group[i]
-            square.set_fill(mn.GREY, 1)
+            square.set_fill(color, opacity)
 
-    def unforbid_squares(self, positions):
+    def fill_squares_animations(self, positions, color: mn.ManimColor, opacity=1):
+        animations = []
         for (row, col) in positions:
             i = row * self.cols + col
             if len(self.group) <= i:
                 continue
 
             square = self.group[i]
-            square.set_fill(opacity=0)
-
-    def unforbid_all_squares(self):
-        self.unforbid_squares([
-            (row, col)
-            for row in range(self.rows)
-            for col in range(self.cols)
-        ])
+            animations.append(square.animate.set_fill(color, opacity))
+        return animations
 
     def remove_rooks(self, positions):
         for (row, col) in positions:
@@ -130,3 +127,6 @@ class Board():
         self.scene.remove(self.group)
         self.scene.add(board1.get_board(), board2.get_board())
         return (board1, board2)
+
+    def get_square_at(self, i):
+        return self.group[i]
