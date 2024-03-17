@@ -13,7 +13,7 @@ from utils.board import Board
 # mn.config.disable_caching = True
 
 
-class RookPolynomial1(mn.Scene):
+class ForbiddenConfigurations(mn.Scene):
     run_animations = True
 
     def construct(self):
@@ -25,7 +25,7 @@ class RookPolynomial1(mn.Scene):
 
         self.first_scene()
         if self.run_animations:
-            self.wait(3)
+            self.wait(5)
             self.play(mn.FadeOut(*self.mobjects))
         self.remove(*self.mobjects)
 
@@ -50,7 +50,7 @@ class RookPolynomial1(mn.Scene):
             "Ile jest sposobów na obsadzenie stanowisk (szare pole oznacza brak kwalifikacji)?",
             font_size=18
         )
-        text1.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
+        text1.next_to(title, mn.DOWN).shift(mn.DOWN * 0.25)
         text2.next_to(text1, mn.DOWN)
 
         if self.run_animations:
@@ -85,6 +85,7 @@ class RookPolynomial1(mn.Scene):
 
         if self.run_animations:
             self.play(*animations)
+            self.wait(1)
         else:
             for a in animations:
                 if a is not None:
@@ -177,12 +178,18 @@ class RookPolynomial1(mn.Scene):
         # ========== TEXT ==========
 
         text3 = mn.Text(
-            "Do rozwiązania tego i podobnych zadań możemy wykorzystać wielomiany szachowe.",
-            font_size=18
+            "Powyższy problem jest równoważny znalezieniu wszystkich możliwości rozmieszczenia czterech wież",
+            font_size=18,
         )
-        text3.next_to(board.get_board(), mn.DOWN).shift(mn.DOWN * 0.5)
+        text3.next_to(board.get_board(), mn.DOWN).shift(mn.DOWN * 0.25)
+
+        text4 = mn.Text(
+            "na szachownicy, tak aby się wzajemnie nie atakowały.",
+            font_size=18,
+        )
+        text4.next_to(text3, mn.DOWN)
 
         if self.run_animations:
-            self.play(mn.FadeIn(text3))
+            self.play(mn.FadeIn(text3), mn.FadeIn(text4))
         else:
-            self.add(text3)
+            self.add(text3, text4)
