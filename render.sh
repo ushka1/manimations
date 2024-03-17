@@ -1,7 +1,9 @@
 #!/bin/sh
 
-# manim -pql ./src/stirling_i.py StirlingI
+manim -pqh ./src/stirling_i.py StirlingI
 
-# manim -pql ./src/stirling_ii.py StirlingII
+manim -pqh ./src/stirling_ii.py StirlingII
 
-# manim -pql ./src/rook_polynomial_1.py RookPolynomial1
+manim -pqh ./src/forbidden_configurations.py ForbiddenConfigurations
+
+manim -pqh ./src/rook_polynomial_1.py RookPolynomial1
