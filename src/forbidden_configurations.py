@@ -1,9 +1,3 @@
-# 1. Pokaż szachy.
-# 1. Wielomian szachowy - definicja.
-# 1. Wielomian szachowy - przykład:
-#   - podświetlenie r_x i render wież na tablicy.
-
-
 # pylint: disable=C0114, C0115, C0116, C0301
 
 import manim as mn

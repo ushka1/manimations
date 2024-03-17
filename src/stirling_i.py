@@ -1,4 +1,4 @@
-# pylint: disable=C0114, C0115, C0116
+# pylint: disable=C0114, C0115, C0116, C0301
 
 import manim as mn
 import numpy as np
