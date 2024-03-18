@@ -2,54 +2,11 @@
 
 import manim as mn
 
+from utils.bucket import Bucket
+from utils.create_balls import create_balls
+
 # mn.config.disable_caching = True
-
-
-class Bucket():
-    def __init__(self, rows: int, cols: int):
-        self.rows = rows
-        self.cols = cols
-
-        width = cols
-        height = rows
-        points = [
-            [-width / 2, height / 2, 0],
-            [-width / 2, -height / 2, 0],
-            [width / 2, -height / 2, 0],
-            [width / 2, height / 2, 0],
-            [width / 2, -height / 2, 0],
-            [-width / 2, -height / 2, 0],
-            [-width / 2, height / 2, 0],
-        ]
-        self.polygon = mn.Polygon(*points, color=mn.WHITE)  # type: ignore
-
-    def get_bucket(self):
-        return self.polygon
-
-    def get_cell_coords(self, row: int, col: int):
-        col_width = self.polygon.width / self.cols
-        row_height = self.polygon.height / self.rows
-        x = self.polygon.get_left()[0] + (col + 1/2) * col_width
-        y = self.polygon.get_bottom()[1] + (row + 1/2) * row_height
-        return (x, y, 0)
-
-
-def create_balls(colors: list[mn.ManimColor]):
-    balls = mn.VGroup()
-    for (i, color) in enumerate(colors):
-        ball = mn.Circle(
-            radius=0.3,
-        ).set_fill(color, 1).set_stroke(width=0)
-
-        label = mn.Text(str(i + 1), font_size=36, color=mn.BLACK)
-        label.move_to(ball)
-
-        group = mn.VGroup(ball, label)
-        group.set_z_index(1)
-        balls.add(group)
-
-    balls.arrange(mn.RIGHT)
-    return balls
+mn.Text.set_default(font="Roboto", font_size=16)
 
 
 stirling_partitions = [
@@ -79,10 +36,6 @@ class StirlingII(mn.Scene):
     run_animations = True
 
     def construct(self):
-        # ========== CONFIG ==========
-
-        mn.Text.set_default(font="Roboto", font_size=16)
-
         # ========== SCENES ==========
 
         self.first_scene()

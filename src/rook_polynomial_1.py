@@ -6,17 +6,14 @@ from utils.board import Board
 from utils.get_available_configurations import get_available_configurations
 
 # mn.config.disable_caching = True
+mn.Text.set_default(font="Roboto", font_size=16)
+mn.Tex.set_default(font_size=32)
 
 
 class RookPolynomial1(mn.Scene):
     run_animations = True
 
     def construct(self):
-        # ========== CONFIG ==========
-
-        mn.Text.set_default(font="Roboto", font_size=16)
-        mn.Tex.set_default(font_size=32)
-
         # ========== SCENES ==========
 
         self.first_scene()

@@ -3,45 +3,11 @@
 import manim as mn
 import numpy as np
 
+from utils.create_balls import create_balls
+from utils.cycle import Cycle
+
 # mn.config.disable_caching = True
-
-
-class Cycle():
-    def __init__(self, r: int):
-        self.circle = mn.Circle(radius=r, color=mn.WHITE)
-
-    def get_cycle(self):
-        return self.circle
-
-    def get_cell_coords(self, n: int):
-        x, y, _ = self.circle.get_center()
-        cells = []
-        angle = 2 * np.pi / n
-
-        for i in range(n):
-            dx = self.circle.width / 2 * np.cos(i * angle)
-            dy = self.circle.width / 2 * np.sin(i * angle)
-            cells.append((round(x + dx, 2), round(y + dy, 2), 0))
-
-        return cells
-
-
-def create_balls(colors: list[mn.ManimColor]):
-    balls = mn.VGroup()
-    for (i, color) in enumerate(colors):
-        ball = mn.Circle(
-            radius=0.3,
-        ).set_fill(color, 1).set_stroke(width=0)
-
-        label = mn.Text(str(i + 1), font_size=36, color=mn.BLACK)
-        label.move_to(ball)
-
-        group = mn.VGroup(ball, label)
-        group.set_z_index(1)
-        balls.add(group)
-
-    balls.arrange(mn.RIGHT)
-    return balls
+mn.Text.set_default(font="Roboto", font_size=16)
 
 
 stirling_partitions = [
@@ -67,10 +33,6 @@ class StirlingI(mn.Scene):
     run_animations = True
 
     def construct(self):
-        # ========== CONFIG ==========
-
-        mn.Text.set_default(font="Roboto", font_size=16)
-
         # ========== SCENES ==========
 
         self.first_scene()

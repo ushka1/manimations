@@ -5,16 +5,13 @@ import manim as mn
 from utils.board import Board
 
 # mn.config.disable_caching = True
+mn.Text.set_default(font="Roboto", font_size=16)
 
 
 class ForbiddenConfigurations(mn.Scene):
     run_animations = True
 
     def construct(self):
-        # ========== CONFIG ==========
-
-        mn.Text.set_default(font="Roboto", font_size=16)
-
         # ========== SCENES ==========
 
         self.first_scene()
