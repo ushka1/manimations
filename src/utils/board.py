@@ -21,20 +21,6 @@ class Board():
     def get_board(self):
         return self.group
 
-    def place_rooks(self, positions):
-        for (row, col) in positions:
-            i = row * self.cols + col
-            if len(self.group) <= i:
-                continue
-
-            square = self.group[i]
-            if len(square) > 1:
-                continue
-
-            rook = mn.Circle(radius=square.width / 3, color=mn.WHITE)
-            rook.move_to(square)
-            square.add(rook)
-
     def fill_squares(self, positions, color: mn.ManimColor, opacity=1):
         for (row, col) in positions:
             i = row * self.cols + col
@@ -55,6 +41,37 @@ class Board():
             animations.append(square.animate.set_fill(color, opacity))
         return animations
 
+    def place_rooks(self, positions):
+        for (row, col) in positions:
+            i = row * self.cols + col
+            if len(self.group) <= i:
+                continue
+
+            square = self.group[i]
+            if len(square) > 1:
+                continue
+
+            rook = mn.Circle(radius=square.width / 3, color=mn.WHITE)
+            rook.move_to(square)
+            square.add(rook)
+
+    def place_rooks_animations(self, positions):
+        animations = []
+        for (row, col) in positions:
+            i = row * self.cols + col
+            if len(self.group) <= i:
+                continue
+
+            square = self.group[i]
+            if len(square) > 1:
+                continue
+
+            rook = mn.Circle(radius=square.width / 3, color=mn.WHITE)
+            rook.move_to(square)
+            square.add(rook)
+            animations.append(mn.FadeIn(rook))
+        return animations
+
     def remove_rooks(self, positions):
         for (row, col) in positions:
             i = row * self.cols + col
@@ -65,8 +82,29 @@ class Board():
                 square.remove(circle)
                 self.scene.remove(circle)
 
+    def remove_rooks_animations(self, positions):
+        animations = []
+        for (row, col) in positions:
+            i = row * self.cols + col
+            if len(self.group) <= i:
+                continue
+
+            square = self.group[i]
+            if len(square) > 1:
+                rook = square[1]
+                square.remove(rook)
+                animations.append(mn.FadeOut(rook))
+        return animations
+
     def remove_all_rooks(self):
         self.remove_rooks([
+            (row, col)
+            for row in range(self.rows)
+            for col in range(self.cols)
+        ])
+
+    def remove_all_rooks_animations(self):
+        return self.remove_rooks_animations([
             (row, col)
             for row in range(self.rows)
             for col in range(self.cols)
