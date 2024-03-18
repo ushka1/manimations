@@ -5,7 +5,7 @@ import manim as mn
 from utils.board import Board
 
 # mn.config.disable_caching = True
-mn.Text.set_default(font="Roboto", font_size=16)
+mn.Text.set_default(font="Ubuntu", font_size=16)
 
 
 class ForbiddenConfigurations(mn.Scene):

@@ -5,7 +5,7 @@ import manim as mn
 from utils.board import Board
 
 # mn.config.disable_caching = True
-mn.Text.set_default(font="Roboto", font_size=18)
+mn.Text.set_default(font="Ubuntu", font_size=18)
 
 
 class RookPolynomial2(mn.Scene):
@@ -40,7 +40,6 @@ class RookPolynomial2(mn.Scene):
 
         if self.run_animations:
             self.play(mn.FadeIn(text1))
-            self.wait(1)
         else:
             self.add(text1)
 
@@ -82,9 +81,9 @@ class RookPolynomial2(mn.Scene):
 
         if self.run_animations:
             self.play(*animations)
-            self.wait(1)
+            self.wait(5)
 
-        # ========== BOARD ==========
+        # ========== SWAPPING ==========
 
         if self.run_animations:
             self.play(*board.swap_cols_animations(0, 2))

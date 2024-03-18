@@ -6,12 +6,12 @@ from utils.board import Board
 from utils.get_available_configurations import get_available_configurations
 
 # mn.config.disable_caching = True
-mn.Text.set_default(font="Roboto", font_size=16)
+mn.Text.set_default(font="Ubuntu", font_size=16)
 mn.Tex.set_default(font_size=32)
 
 
 class RookPolynomial1(mn.Scene):
-    run_animations = True
+    run_animations = False
 
     def construct(self):
         # ========== SCENES ==========
@@ -26,7 +26,7 @@ class RookPolynomial1(mn.Scene):
         if self.run_animations:
             self.wait(5)
             self.play(mn.FadeOut(*self.mobjects))
-        self.remove(*self.mobjects)
+        # self.remove(*self.mobjects)
 
     def first_scene(self):
         # ========== TITLE ==========
@@ -217,7 +217,7 @@ class RookPolynomial1(mn.Scene):
                                 f"r_B(x) = 1 + {render_r(r,0)}x + {render_r(r,1)}x^2 + {render_r(r,2)}x^3",
                             ).next_to(board.get_board(), mn.DOWN, buff=1.5))
                         )
-                        self.wait(0.5)
+                        self.wait(0.25)
 
         if self.run_animations:
             remove_animations = board.remove_all_rooks_animations()

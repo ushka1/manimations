@@ -6,7 +6,7 @@ from utils.bucket import Bucket
 from utils.create_balls import create_balls
 
 # mn.config.disable_caching = True
-mn.Text.set_default(font="Roboto", font_size=16)
+mn.Text.set_default(font="Ubuntu", font_size=16)
 
 
 stirling_partitions = [
