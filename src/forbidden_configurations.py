@@ -37,7 +37,7 @@ class ForbiddenConfigurations(mn.Scene):
         # ========== TEXT ==========
 
         text1 = mn.Text(
-            "Załóżmy, że mamy n osób, o różnych kwalifikacjach, oraz m stanowisk, które muszą zostać obsadzone.",
+            "Załóżmy, że mamy m osób, o różnych kwalifikacjach, oraz n stanowisk, które muszą zostać obsadzone.",
             font_size=18
         )
         text2 = mn.Text(
@@ -60,19 +60,18 @@ class ForbiddenConfigurations(mn.Scene):
         animations: list[mn.FadeIn | None] = []
 
         board = Board(self, 5, 4)
-        board.run_animations = self.run_animations
         board.get_board().next_to(text2, mn.DOWN).shift(mn.DOWN * 1.5)
         animations.append(mn.FadeIn(board.get_board()))
 
-        n_labels = ["Ann", "Ed", "Joe", "Leo", "Sue"]
-        n_labels_mobjects = [mn.Text(label) for label in n_labels]
-        for i, mob in enumerate(n_labels_mobjects):
+        m_labels = ["Ann", "Ed", "Joe", "Leo", "Sue"]
+        m_labels_mobjects = [mn.Text(label) for label in m_labels]
+        for i, mob in enumerate(m_labels_mobjects):
             mob.next_to(board.get_square_at(board.cols * i), mn.LEFT)
             animations.append(mn.FadeIn(mob))
 
-        m_labels = ["Frontend", "Backend", "Testing", "AI"]
-        m_labels_mobjects = [mn.Text(label) for label in m_labels]
-        for i, mob in enumerate(m_labels_mobjects):
+        n_labels = ["Frontend", "Backend", "Testing", "AI"]
+        n_labels_mobjects = [mn.Text(label) for label in n_labels]
+        for i, mob in enumerate(n_labels_mobjects):
             mob.rotate(-90 * mn.DEGREES)
             mob.next_to(board.get_square_at(i), mn.UP)
             animations.append(mn.FadeIn(mob))
@@ -91,15 +90,15 @@ class ForbiddenConfigurations(mn.Scene):
             for _ in range(3):
                 self.play(text1[14:20].animate.set_color(mn.WHITE),
                           *[mob.animate.set_color(mn.WHITE)
-                            for mob in n_labels_mobjects],
+                            for mob in m_labels_mobjects],
                           run_time=0.2)
                 self.play(text1[14:20].animate.set_color(mn.BLUE),
                           *[mob.animate.set_color(mn.BLUE)
-                            for mob in n_labels_mobjects],
+                            for mob in m_labels_mobjects],
                           run_time=0.2)
         else:
             text1[14:20].set_color(mn.BLUE)
-            for mob in n_labels_mobjects:
+            for mob in m_labels_mobjects:
                 mob.set_color(mn.BLUE)
 
         if self.run_animations:
@@ -109,15 +108,15 @@ class ForbiddenConfigurations(mn.Scene):
             for _ in range(3):
                 self.play(text1[46:56].animate.set_color(mn.WHITE),
                           *[mob.animate.set_color(mn.WHITE)
-                            for mob in m_labels_mobjects],
+                            for mob in n_labels_mobjects],
                           run_time=0.2)
                 self.play(text1[46:56].animate.set_color(mn.ORANGE),
                           *[mob.animate.set_color(mn.ORANGE)
-                            for mob in m_labels_mobjects],
+                            for mob in n_labels_mobjects],
                           run_time=0.2)
         else:
             text1[46:56].set_color(mn.ORANGE)
-            for mob in m_labels_mobjects:
+            for mob in n_labels_mobjects:
                 mob.set_color(mn.ORANGE)
 
         if self.run_animations:
