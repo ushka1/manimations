@@ -1,7 +1,6 @@
 # pylint: disable=C0114, C0115, C0116, C0301
 
 import manim as mn
-import numpy as np
 
 
 class Cycle():
@@ -14,7 +13,7 @@ class Cycle():
     def get_cell_coords(self, n: int):
         x, y, _ = self.circle.get_center()
         cells = []
-        angle = 2 * np.pi / n
+        angle = 2 * mn.PI / n
 
         for i in range(n):
             dx = self.circle.width / 2 * np.cos(i * angle)

@@ -1,7 +1,6 @@
 # pylint: disable=C0114, C0115, C0116, C0301
 
 import manim as mn
-import numpy as np
 
 from utils.create_balls import create_balls
 from utils.cycle import Cycle
@@ -184,8 +183,8 @@ class StirlingI(mn.Scene):
             self.wait(0.5)
             self.play(
                 mn.AnimationGroup(
-                    mn.Rotate(cycle2.get_cycle(), 2*np.pi, run_time=2),
-                    mn.Rotate(cycle1.get_cycle(), 2*np.pi, run_time=2),
+                    mn.Rotate(cycle2.get_cycle(), 2 * mn.PI, run_time=2),
+                    mn.Rotate(cycle1.get_cycle(), 2 * mn.PI, run_time=2),
                     lag_ratio=0.5
                 )
             )

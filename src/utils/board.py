@@ -9,6 +9,8 @@ class Board():
         self.rows = rows
         self.cols = cols
         self.group = mn.VGroup()
+        self.x_labels = mn.VGroup()
+        self.y_labels = mn.VGroup()
 
         for _ in range(rows):
             for _ in range(cols):
@@ -20,6 +22,39 @@ class Board():
 
     def get_board(self):
         return self.group
+
+    def set_y_labels(self, labels):
+        texts = []
+        for (i, label) in enumerate(labels):
+            texts.append(mn.Text(label))
+
+        max_width = max([text.get_width() for text in texts])
+        for (i, text) in enumerate(texts):
+            container = mn.Rectangle(height=0.5, width=max_width)
+            container.add(text.align_to(container, mn.RIGHT))
+            container.set_stroke(width=0)
+            self.y_labels.add(container)
+            self.y_labels[i].next_to(self.group[i * self.cols], mn.LEFT)
+
+    def get_y_labels(self):
+        return self.y_labels
+
+    def set_x_labels(self, labels):
+        texts = []
+        for (i, label) in enumerate(labels):
+            texts.append(mn.Text(label))
+
+        max_width = max([text.get_width() for text in texts])
+        for (i, text) in enumerate(texts):
+            container = mn.Rectangle(height=0.5, width=max_width)
+            container.add(text.align_to(container, mn.RIGHT))
+            container.set_stroke(width=0)
+            container.rotate(-mn.PI / 2)
+            self.x_labels.add(container)
+            self.x_labels[i].next_to(self.group[i], mn.UP)
+
+    def get_x_labels(self):
+        return self.x_labels
 
     def fill_squares(self, positions, color: mn.ManimColor, opacity=1):
         for (row, col) in positions:
@@ -113,20 +148,66 @@ class Board():
     def swap_rows(self, i, j):
         row1 = self.group[i * self.cols:(i + 1) * self.cols]
         row2 = self.group[j * self.cols:(j + 1) * self.cols]
+        self.group[i * self.cols:(i + 1) * self.cols] = row2  # type: ignore
+        self.group[j * self.cols:(j + 1) * self.cols] = row1  # type: ignore
 
-        self.group[i * self.cols:(i + 1) * self.cols] = row2
-        self.group[j * self.cols:(j + 1) * self.cols] = row1
+        label1 = self.y_labels[i]
+        label2 = self.y_labels[j]
+        self.y_labels[i] = label2  # type: ignore
+        self.y_labels[j] = label1  # type: ignore
 
         self.group.arrange_in_grid(self.rows, self.cols, buff=0)
+        label1.next_to(row1, mn.LEFT)
+        label2.next_to(row2, mn.LEFT)
+
+    def swap_rows_animations(self, i, j):
+        row1 = self.group[i * self.cols:(i + 1) * self.cols]
+        row2 = self.group[j * self.cols:(j + 1) * self.cols]
+        self.group[i * self.cols:(i + 1) * self.cols] = row2  # type: ignore
+        self.group[j * self.cols:(j + 1) * self.cols] = row1  # type: ignore
+
+        label1 = self.y_labels[i]
+        label2 = self.y_labels[j]
+        self.y_labels[i] = label2  # type: ignore
+        self.y_labels[j] = label1  # type: ignore
+
+        group1 = mn.VGroup(*row1, label1)
+        group2 = mn.VGroup(*row2, label2)
+        return [
+            mn.Swap(group1, group2),
+        ]
 
     def swap_cols(self, i, j):
         col1 = self.group[i::self.cols]
         col2 = self.group[j::self.cols]
+        self.group[i::self.cols] = col2  # type: ignore
+        self.group[j::self.cols] = col1  # type: ignore
 
-        self.group[i::self.cols] = col2
-        self.group[j::self.cols] = col1
+        label1 = self.x_labels[i]
+        label2 = self.x_labels[j]
+        self.x_labels[i] = label2  # type: ignore
+        self.x_labels[j] = label1  # type: ignore
 
         self.group.arrange_in_grid(self.rows, self.cols, buff=0)
+        label1.next_to(col1, mn.UP)
+        label2.next_to(col2, mn.UP)
+
+    def swap_cols_animations(self, i, j):
+        col1 = self.group[i::self.cols]
+        col2 = self.group[j::self.cols]
+        self.group[i::self.cols] = col2  # type: ignore
+        self.group[j::self.cols] = col1  # type: ignore
+
+        label1 = self.x_labels[i]
+        label2 = self.x_labels[j]
+        self.x_labels[i] = label2  # type: ignore
+        self.x_labels[j] = label1  # type: ignore
+
+        group1 = mn.VGroup(*col1, label1)
+        group2 = mn.VGroup(*col2, label2)
+        return [
+            mn.Swap(group1, group2),
+        ]
 
     def split_on_y_axis(self, y):
         group1 = mn.VGroup()
