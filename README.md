@@ -7,6 +7,7 @@
 - Forbidden configurations
 - Rook polynomials 1 - definition & usage
 - Rook polynomials 2 - row/column swaps
+<!-- + transposition -->
 - Rook polynomials 3 - disjoint boards
 - Rook polynomials 4 - row-column removal
 <!-- - Rook polynomials 5 - highest factor calculated by usage of complement board -->

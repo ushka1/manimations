@@ -8,6 +8,7 @@ from utils.get_available_configurations import get_available_configurations
 # mn.config.disable_caching = True
 mn.Text.set_default(font="Ubuntu", font_size=16)
 mn.Tex.set_default(font_size=32)
+mn.MathTex.set_default(font_size=48)
 
 
 class RookPolynomial1(mn.Scene):

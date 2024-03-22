@@ -56,6 +56,17 @@ class Board():
     def get_x_labels(self):
         return self.x_labels
 
+    def outline_squares(self, color: mn.ManimColor, opacity=1):
+        for square in self.group:
+            square.set_stroke(color, opacity=opacity)
+
+    def outline_squares_animations(self, color: mn.ManimColor, opacity=1):
+        animations = []
+        for square in self.group:
+            animations.append(
+                square.animate.set_stroke(color, opacity=opacity))
+        return animations
+
     def fill_squares(self, positions, color: mn.ManimColor, opacity=1):
         for (row, col) in positions:
             i = row * self.cols + col
