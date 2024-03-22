@@ -1,5 +1,8 @@
 # pylint: disable=C0114, C0115, C0116, C0301
 
+
+import math
+
 import manim as mn
 
 
@@ -16,8 +19,8 @@ class Cycle():
         angle = 2 * mn.PI / n
 
         for i in range(n):
-            dx = self.circle.width / 2 * np.cos(i * angle)
-            dy = self.circle.width / 2 * np.sin(i * angle)
+            dx = self.circle.width / 2 * math.cos(i * angle)
+            dy = self.circle.width / 2 * math.sin(i * angle)
             cells.append((round(x + dx, 2), round(y + dy, 2), 0))
 
         return cells

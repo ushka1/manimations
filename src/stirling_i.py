@@ -2,12 +2,11 @@
 
 import manim as mn
 
+import utils.constants as consts
 from utils.create_balls import create_balls
 from utils.cycle import Cycle
 
-# mn.config.disable_caching = True
-mn.Text.set_default(font="Ubuntu", font_size=16)
-
+consts.set_defaults()
 
 stirling_partitions = [
     [[0], [1, 2, 3]],
@@ -36,7 +35,7 @@ class StirlingI(mn.Scene):
 
         self.first_scene()
         if self.run_animations:
-            self.wait(2)
+            self.wait(5)
             self.play(mn.FadeOut(*self.mobjects))
         self.remove(*self.mobjects)
 
@@ -49,7 +48,7 @@ class StirlingI(mn.Scene):
     def first_scene(self):
         # ========== TITLE ==========
 
-        title = mn.Text("Liczby Stirlinga I rodzaju", font_size=24)
+        title = mn.Text("Liczby Stirlinga I rodzaju", font_size=consts.FONT_LG)
         title.to_edge(mn.UP)
 
         if self.run_animations:
@@ -61,15 +60,16 @@ class StirlingI(mn.Scene):
 
         formula = mn.MathTex(
             r"\begin{bmatrix} \ n \ \\ \ k \ \end{bmatrix} = c(n,k)",
-            font_size=36,
+            font_size=consts.FONT_XL,
         )
-        formula.next_to(title, mn.DOWN).shift(mn.DOWN * 0.5)
+        formula.next_to(title, mn.DOWN, buff=0.5)
 
         text = mn.Text(
-            "Jest to liczba sposobów zorganizowania n rozróżnialnych kul w k nierozróżnialnych cyklach.",
-            font_size=18
+            "Jest to liczba sposobów zorganizowania n rozróżnialnych kul" +
+            "w k nierozróżnialnych cyklach.",
+            font_size=consts.FONT_SM,
         )
-        text.next_to(formula, mn.DOWN)
+        text.next_to(formula, mn.DOWN, buff=0.5)
 
         if self.run_animations:
             self.play(mn.FadeIn(formula))
@@ -81,7 +81,7 @@ class StirlingI(mn.Scene):
         # ========== HIGHLIGHT BALLS TEXT ==========
 
         if self.run_animations:
-            for _ in range(3):
+            for _ in range(5):
                 self.play(formula[0][1].animate.set_color(mn.WHITE),
                           formula[0][7].animate.set_color(mn.WHITE),
                           text[34:52].animate.set_color(mn.WHITE),
@@ -99,7 +99,7 @@ class StirlingI(mn.Scene):
 
         balls = create_balls([mn.RED, mn.ORANGE, mn.YELLOW,
                               mn.GREEN, mn.BLUE, mn.PURPLE])
-        balls.next_to(text, direction=mn.DOWN,).shift(mn.DOWN * 0.5)
+        balls.next_to(text, direction=mn.DOWN, buff=1)
 
         if self.run_animations:
             self.play(mn.FadeIn(balls))
@@ -109,7 +109,7 @@ class StirlingI(mn.Scene):
         # ========== HIGHLIGHT CYCLES TEXT ==========
 
         if self.run_animations:
-            for _ in range(3):
+            for _ in range(5):
                 self.play(formula[0][2].animate.set_color(mn.WHITE),
                           formula[0][9].animate.set_color(mn.WHITE),
                           text[53:78].animate.set_color(mn.WHITE),
@@ -130,10 +130,11 @@ class StirlingI(mn.Scene):
 
         cycles_group = mn.VGroup(cycle1.get_cycle(), cycle2.get_cycle())
         cycles_group.arrange(mn.RIGHT, buff=2)
-        cycles_group.next_to(balls, direction=mn.DOWN).shift(mn.DOWN * 0.5)
+        cycles_group.next_to(balls, direction=mn.DOWN, buff=0.5)
 
         if self.run_animations:
             self.play(mn.FadeIn(cycles_group))
+            self.wait(1)
         else:
             self.add(cycles_group)
 
@@ -180,15 +181,10 @@ class StirlingI(mn.Scene):
                 cycle2.get_cycle().animate.shift(
                     mn.LEFT * (cycle2.get_cycle().radius * 2 + 2)
                 ))
-            self.wait(0.5)
             self.play(
-                mn.AnimationGroup(
-                    mn.Rotate(cycle2.get_cycle(), 2 * mn.PI, run_time=2),
-                    mn.Rotate(cycle1.get_cycle(), 2 * mn.PI, run_time=2),
-                    lag_ratio=0.5
-                )
+                mn.Rotate(cycle2.get_cycle(), 2 * mn.PI, run_time=2),
+                mn.Rotate(cycle1.get_cycle(), 2 * mn.PI, run_time=2),
             )
-            self.wait(0.5)
             self.play(
                 cycle2.get_cycle().animate.shift(
                     mn.RIGHT * (cycle2.get_cycle().radius * 2 + 2)
@@ -208,6 +204,7 @@ class StirlingI(mn.Scene):
 
         if self.run_animations:
             self.play(mn.FadeIn(title))
+            self.wait(1)
         else:
             self.add(title)
 
