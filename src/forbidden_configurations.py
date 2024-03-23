@@ -2,10 +2,11 @@
 
 import manim as mn
 
+import utils.constants as consts
 from utils.board import Board
+from utils.get_available_configurations import get_available_configurations
 
-# mn.config.disable_caching = True
-mn.Text.set_default(font="Ubuntu", font_size=16)
+consts.set_defaults()
 
 
 class ForbiddenConfigurations(mn.Scene):
@@ -23,7 +24,7 @@ class ForbiddenConfigurations(mn.Scene):
     def first_scene(self):
         # ========== TITLE ==========
 
-        title = mn.Text("Konfiguracje zabronione", font_size=24)
+        title = mn.Text("Konfiguracje zabronione", font_size=consts.FONT_LG)
         title.to_edge(mn.UP)
 
         if self.run_animations:
@@ -34,57 +35,53 @@ class ForbiddenConfigurations(mn.Scene):
         # ========== TEXT ==========
 
         text1 = mn.Text(
-            "Załóżmy, że mamy m osób, o różnych kwalifikacjach, oraz n stanowisk, które muszą zostać obsadzone.",
-            font_size=18
+            "Załóżmy, że mamy m osób, o różnych kwalifikacjach, oraz n stanowisk, które muszą zostać obsadzone."
         )
+        text1.next_to(title, mn.DOWN, buff=0.5)
+
         text2 = mn.Text(
             "Ile jest sposobów na obsadzenie stanowisk (szare pole oznacza brak kwalifikacji)?",
-            font_size=18
         )
-        text1.next_to(title, mn.DOWN).shift(mn.DOWN * 0.25)
-        text2.next_to(text1, mn.DOWN)
+        text2.next_to(text1, mn.DOWN, buff=0.125)
 
         if self.run_animations:
-            self.play(mn.FadeIn(text1), mn.FadeIn(text2))
+            self.play(
+                mn.FadeIn(text1),
+                mn.FadeIn(text2)
+            )
         else:
             self.add(text1, text2)
-
-        if self.run_animations:
-            self.wait(5)
 
         # ========== BOARD ==========
 
         animations: list[mn.FadeIn | None] = []
 
         board = Board(self, 5, 4)
-        board.get_board().next_to(text2, mn.DOWN).shift(mn.DOWN * 1.5)
+        board.get_board().next_to(text2, mn.DOWN, buff=1.75)
         animations.append(mn.FadeIn(board.get_board()))
 
-        m_labels = ["Ann", "Ed", "Joe", "Leo", "Sue"]
-        m_labels_mobjects = [mn.Text(label) for label in m_labels]
-        for i, mob in enumerate(m_labels_mobjects):
-            mob.next_to(board.get_square_at(board.cols * i), mn.LEFT)
-            animations.append(mn.FadeIn(mob))
+        board.set_y_labels(["Ann", "Ed", "Joe", "Leo", "Sue"])
+        m_labels_mobjects = board.get_y_labels()
+        for label in board.get_y_labels():
+            animations.append(mn.FadeIn(label))
 
-        n_labels = ["Frontend", "Backend", "Testing", "AI"]
-        n_labels_mobjects = [mn.Text(label) for label in n_labels]
-        for i, mob in enumerate(n_labels_mobjects):
-            mob.rotate(-90 * mn.DEGREES)
-            mob.next_to(board.get_square_at(i), mn.UP)
-            animations.append(mn.FadeIn(mob))
+        board.set_x_labels(["Frontend", "Backend", "Testing", "AI"])
+        n_labels_mobjects = board.get_x_labels()
+        for label in board.get_x_labels():
+            animations.append(mn.FadeIn(label))
 
         if self.run_animations:
             self.play(*animations)
-            self.wait(1)
+            self.wait(5)
         else:
             for a in animations:
                 if a is not None:
                     self.add(a.mobject)
 
-        # ========== HIGHLIGHT ==========
+        # ========== HIGHLIGHT PEOPLE ==========
 
         if self.run_animations:
-            for _ in range(3):
+            for _ in range(5):
                 self.play(text1[14:20].animate.set_color(mn.WHITE),
                           *[mob.animate.set_color(mn.WHITE)
                             for mob in m_labels_mobjects],
@@ -93,16 +90,16 @@ class ForbiddenConfigurations(mn.Scene):
                           *[mob.animate.set_color(mn.BLUE)
                             for mob in m_labels_mobjects],
                           run_time=0.2)
+            self.wait(1)
         else:
             text1[14:20].set_color(mn.BLUE)
             for mob in m_labels_mobjects:
                 mob.set_color(mn.BLUE)
 
-        if self.run_animations:
-            self.wait(1)
+        # ========== HIGHLIGHT JOBS ==========
 
         if self.run_animations:
-            for _ in range(3):
+            for _ in range(5):
                 self.play(text1[46:56].animate.set_color(mn.WHITE),
                           *[mob.animate.set_color(mn.WHITE)
                             for mob in n_labels_mobjects],
@@ -111,27 +108,28 @@ class ForbiddenConfigurations(mn.Scene):
                           *[mob.animate.set_color(mn.ORANGE)
                             for mob in n_labels_mobjects],
                           run_time=0.2)
+            self.wait(1)
         else:
             text1[46:56].set_color(mn.ORANGE)
             for mob in n_labels_mobjects:
                 mob.set_color(mn.ORANGE)
 
-        if self.run_animations:
-            self.wait(1)
-
         # ========== HIGHLIGHT BOARD ==========
 
+        forbidden_squares = [
+            (0, 1), (0, 2),
+            (1, 0), (1, 3),
+            (2, 1),
+            (3, 0), (3, 2),
+            (4, 1),
+        ]
+
         if self.run_animations:
-            for _ in range(3):
+            for _ in range(5):
                 self.play(
                     text2[36:69].animate.set_color(mn.WHITE),
-                    *board.fill_squares_animations([
-                        (0, 1), (0, 2),
-                        (1, 0), (1, 3),
-                        (2, 1),
-                        (3, 0), (3, 2),
-                        (4, 1),
-                    ],
+                    *board.fill_squares_animations(
+                        forbidden_squares,
                         mn.GREY,
                         opacity=0
                     ),
@@ -139,47 +137,56 @@ class ForbiddenConfigurations(mn.Scene):
                 )
                 self.play(
                     text2[36:69].animate.set_color(mn.GREY_A),
-                    *board.fill_squares_animations([
-                        (0, 1), (0, 2),
-                        (1, 0), (1, 3),
-                        (2, 1),
-                        (3, 0), (3, 2),
-                        (4, 1),
-                    ],
+                    *board.fill_squares_animations(
+                        forbidden_squares,
                         mn.GREY
                     ),
                     run_time=0.2
                 )
+            self.wait(1)
         else:
             text2[36:69].set_color(mn.GREY_A)
-            board.fill_squares([
-                (0, 1), (0, 2),
-                (1, 0), (1, 3),
-                (2, 1),
-                (3, 0), (3, 2),
-                (4, 1),
-            ],
+            board.fill_squares(
+                forbidden_squares,
                 mn.GREY
             )
-
-        if self.run_animations:
-            self.wait(1)
 
         # ========== TEXT ==========
 
         text3 = mn.Text(
             "Powyższy problem jest równoważny znalezieniu wszystkich możliwości rozmieszczenia czterech wież",
-            font_size=18,
         )
-        text3.next_to(board.get_board(), mn.DOWN).shift(mn.DOWN * 0.25)
+        text3.next_to(board.get_board(), mn.DOWN, buff=0.5)
 
         text4 = mn.Text(
             "na szachownicy, tak aby się wzajemnie nie atakowały.",
-            font_size=18,
         )
-        text4.next_to(text3, mn.DOWN)
+        text4.next_to(text3, mn.DOWN, buff=0.125)
 
         if self.run_animations:
-            self.play(mn.FadeIn(text3), mn.FadeIn(text4))
+            self.play(
+                mn.FadeIn(text3),
+                mn.FadeIn(text4)
+            )
+            self.wait(3)
         else:
             self.add(text3, text4)
+
+        # ========== ROOKS PLACEMENT ==========
+
+        configs = get_available_configurations(
+            5, 4, forbidden_squares, 4)
+
+        if configs is None:
+            return
+
+        if self.run_animations:
+            for c in configs:
+                if self.run_animations:
+                    remove_animations = board.remove_all_rooks_animations()
+                    if len(remove_animations) > 0:
+                        self.play(*remove_animations, run_time=0.25)
+                    self.play(*board.place_rooks_animations(c),
+                              run_time=0.25)
+        else:
+            board.place_rooks(configs[len(configs) - 1])

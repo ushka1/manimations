@@ -3,14 +3,13 @@
 
 import manim as mn
 
-
-def set_defaults():
-    mn.Text.set_default(font="Ubuntu", font_size=20)
-    mn.Tex.set_default(font_size=32)
-    mn.MathTex.set_default(font_size=40)
-
-
 FONT_SM = 20
 FONT_MD = 24
 FONT_LG = 32
 FONT_XL = 40
+
+
+def set_defaults():
+    mn.Text.set_default(font="Ubuntu", font_size=FONT_SM)
+    mn.Tex.set_default(font_size=FONT_LG)
+    mn.MathTex.set_default(font_size=FONT_XL)
