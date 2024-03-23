@@ -11,3 +11,5 @@ manim -pqh ./src/rook_polynomial_1.py RookPolynomial1
 manim -pqh ./src/rook_polynomial_2.py RookPolynomial2
 
 manim -pqh ./src/rook_polynomial_3.py RookPolynomial3
+
+manim -pqh ./src/rook_polynomial_4.py RookPolynomial4
