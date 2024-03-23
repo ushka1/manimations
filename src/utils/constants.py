@@ -14,7 +14,8 @@ def set_defaults():
     mn.Tex.set_default(font_size=FONT_LG)
     mn.MathTex.set_default(font_size=FONT_XL)
 
-    # tex polish support
-    mn.TexTemplate.add_to_preamble(txt=r"\usepackage{polski}")
-    mn.TexTemplate.add_to_preamble(txt=r"\usepackage[utf8]{inputenc}")
-    mn.TexTemplate.add_to_preamble(txt=r"\usepackage[T1]{fontenc}")
+
+# my_tex_template = mn.TexTemplate()
+# my_tex_template.add_to_preamble(r"\usepackage[T1]{fontenc}")
+# my_tex_template.add_to_preamble(r"\usepackage[polish]{babel}")
+# my_tex_template.add_to_preamble(r"\usepackage[utf8]{inputenc}")
