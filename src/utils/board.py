@@ -74,7 +74,13 @@ class Board():
                 continue
 
             square = self.group[i]
+            rook_color = None
+            if len(square) > 1:
+                rook_color = square[1].get_fill_color()
+
             square.set_fill(color, opacity)
+            if rook_color is not None:
+                square[1].set_fill(rook_color)
 
     def fill_squares_animations(self, positions, color: mn.ManimColor, opacity=1):
         animations = []
@@ -84,8 +90,26 @@ class Board():
                 continue
 
             square = self.group[i]
+            rook_color = None
+            if len(square) > 1:
+                rook_color = square[1].get_fill_color()
+
             animations.append(square.animate.set_fill(color, opacity))
+            if rook_color is not None:
+                animations.append(square[1].animate.set_fill(rook_color))
+
         return animations
+
+    def get_rook(self, row, col):
+        i = row * self.cols + col
+        if len(self.group) <= i:
+            return None
+
+        square = self.group[i]
+        if len(square) <= 1:
+            return None
+
+        return square[1]
 
     def place_rooks(self, positions):
         for (row, col) in positions:
@@ -116,6 +140,37 @@ class Board():
             rook.move_to(square)
             square.add(rook)
             animations.append(mn.FadeIn(rook))
+        return animations
+
+    def place_symbol_rooks(self, positions, symbol):
+        for (row, col) in positions:
+            i = row * self.cols + col
+            if len(self.group) <= i:
+                continue
+
+            square = self.group[i]
+            if len(square) > 1:
+                continue
+
+            text = mn.Text(symbol)
+            text.move_to(square)
+            square.add(text)
+
+    def place_symbol_rooks_animations(self, positions, symbol):
+        animations = []
+        for (row, col) in positions:
+            i = row * self.cols + col
+            if len(self.group) <= i:
+                continue
+
+            square = self.group[i]
+            if len(square) > 1:
+                continue
+
+            text = mn.Text(symbol)
+            text.move_to(square)
+            square.add(text)
+            animations.append(mn.FadeIn(text))
         return animations
 
     def remove_rooks(self, positions):
