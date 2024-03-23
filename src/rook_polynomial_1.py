@@ -2,17 +2,15 @@
 
 import manim as mn
 
+import utils.constants as consts
 from utils.board import Board
 from utils.get_available_configurations import get_available_configurations
 
-# mn.config.disable_caching = True
-mn.Text.set_default(font="Ubuntu", font_size=16)
-mn.Tex.set_default(font_size=32)
-mn.MathTex.set_default(font_size=48)
+consts.set_defaults()
 
 
 class RookPolynomial1(mn.Scene):
-    run_animations = False
+    run_animations = True
 
     def construct(self):
         # ========== SCENES ==========
@@ -32,7 +30,7 @@ class RookPolynomial1(mn.Scene):
     def first_scene(self):
         # ========== TITLE ==========
 
-        title = mn.Text("Wielomiany szachowe", font_size=36)
+        title = mn.Text("Wielomiany szachowe", font_size=consts.FONT_LG)
         title.to_edge(mn.UP)
 
         if self.run_animations:
@@ -50,7 +48,7 @@ class RookPolynomial1(mn.Scene):
         formula = mn.MathTex(
             "r_B(x) = 1 + {r_1}x + {r_2}x^2 + {r_3}x^3 + \\ldots" +
             "+ {r_{min\\{m,n\\}}}x^{min\\{m,n\\}}",
-            font_size=48,
+            font_size=consts.FONT_XL,
         )
         formula.next_to(tex1, mn.DOWN, buff=1)
 
@@ -69,6 +67,8 @@ class RookPolynomial1(mn.Scene):
         if self.run_animations:
             self.play(
                 mn.FadeIn(tex1),
+            )
+            self.play(
                 mn.FadeIn(formula),
             )
             self.wait(3)
@@ -82,7 +82,7 @@ class RookPolynomial1(mn.Scene):
 
         if self.run_animations:
             self.play(mn.FadeIn(tex2))
-            for _ in range(3):
+            for _ in range(5):
                 self.play(
                     formula[0][6:7].animate.set_color(mn.WHITE),
                     formula[0][8:10].animate.set_color(mn.WHITE),
@@ -101,7 +101,6 @@ class RookPolynomial1(mn.Scene):
                     tex2.animate.set_color(mn.BLUE),
                     run_time=0.2
                 )
-            self.wait(3)
         else:
             self.add(tex2)
             formula[0][6:7].set_color(mn.BLUE)
@@ -112,8 +111,11 @@ class RookPolynomial1(mn.Scene):
             tex2.set_color(mn.BLUE)
 
         if self.run_animations:
+            self.wait(1)
+
+        if self.run_animations:
             self.play(mn.FadeIn(tex3))
-            for _ in range(3):
+            for _ in range(5):
                 self.play(
                     formula[0][10:11].animate.set_color(mn.WHITE),
                     formula[0][14:16].animate.set_color(mn.WHITE),
@@ -143,7 +145,7 @@ class RookPolynomial1(mn.Scene):
 
         title = mn.Text(
             "Wielomian szachowy przykładowej tablicy B",
-            font_size=36
+            font_size=consts.FONT_LG
         )
         title.to_edge(mn.UP)
 
@@ -186,7 +188,6 @@ class RookPolynomial1(mn.Scene):
 
         formula = mn.MathTex(
             "r_B(x) = 1 + {r_1}x + {r_2}x^2 + {r_3}x^3",
-            font_size=48,
         )
         formula.next_to(board.get_board(), mn.DOWN, buff=1.5)
 
@@ -207,6 +208,7 @@ class RookPolynomial1(mn.Scene):
                         remove_animations = board.remove_all_rooks_animations()
                         if len(remove_animations) > 0:
                             self.play(*remove_animations, run_time=0.25)
+
                         self.play(*board.place_rooks_animations(c),
                                   run_time=0.25)
 
@@ -218,9 +220,9 @@ class RookPolynomial1(mn.Scene):
                                 f"r_B(x) = 1 + {render_r(r,0)}x + {render_r(r,1)}x^2 + {render_r(r,2)}x^3",
                             ).next_to(board.get_board(), mn.DOWN, buff=1.5))
                         )
-                        self.wait(0.25)
 
         if self.run_animations:
+            self.wait(1)
             remove_animations = board.remove_all_rooks_animations()
             if len(remove_animations) > 0:
                 self.play(*remove_animations, run_time=0.25)
