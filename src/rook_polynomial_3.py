@@ -2,10 +2,10 @@
 
 import manim as mn
 
-import utils.constants as consts
+import utils.theme as theme
 from utils.board import Board
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 
 class RookPolynomial3(mn.Scene):
@@ -31,7 +31,7 @@ class RookPolynomial3(mn.Scene):
 
         title = mn.Text(
             "Wielomiany szachowe - tablice rozłączne",
-            font_size=consts.FONT_LG
+            font_size=theme.FONT_LG
         )
         title.to_edge(mn.UP)
 
@@ -65,7 +65,7 @@ class RookPolynomial3(mn.Scene):
             "Załóżmy, że tablica $B$ składa się z dwóch \"rozłącznych\" tablic $B1$ i $B2$ " +
             "(tzn. o rozłącznych wierszach i kolumnach), a poza tym wyłącznie z pól " +
             "zabronionych. Wówczas:",
-            tex_template=consts.TEX_TEMPLATE,
+            tex_template=theme.TEX_TEMPLATE,
         )
         tex1.next_to(board.get_board(), mn.DOWN, buff=1)
 
@@ -148,7 +148,7 @@ class RookPolynomial3(mn.Scene):
 
         title = mn.Text(
             "Wielomian szachowy przykładowej tablicy B",
-            font_size=consts.FONT_LG,
+            font_size=theme.FONT_LG,
         )
         title.to_edge(mn.UP)
 
@@ -207,14 +207,14 @@ class RookPolynomial3(mn.Scene):
 
         formula_b1 = mn.MathTex(
             "r_{B1}(x) = 1 + 4x + 3x^2",
-            font_size=consts.FONT_LG,
+            font_size=theme.FONT_LG,
         )
         formula_b1.set_color(mn.BLUE)
         formula_b1.next_to(left_bottom.get_board(), mn.LEFT, buff=0.5)
 
         formula_b2 = mn.MathTex(
             "r_{B2}(x) = 1 + 5x + 4x^2",
-            font_size=consts.FONT_LG,
+            font_size=theme.FONT_LG,
         )
         formula_b2.set_color(mn.ORANGE)
         formula_b2.next_to(right_top.get_board(), mn.RIGHT, buff=0.5)

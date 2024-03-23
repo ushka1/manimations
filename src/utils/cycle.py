@@ -7,6 +7,10 @@ import manim as mn
 
 
 class Cycle():
+    """
+    A class to visually represent a cycle.
+    """
+
     def __init__(self, r: int):
         self.circle = mn.Circle(radius=r, color=mn.WHITE)
 

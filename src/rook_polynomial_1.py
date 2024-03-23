@@ -2,11 +2,11 @@
 
 import manim as mn
 
-import utils.constants as consts
+import utils.theme as theme
 from utils.board import Board
-from utils.get_available_configurations import get_available_configurations
+from utils.rook_polynomials import get_available_rook_configs
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 
 class RookPolynomial1(mn.Scene):
@@ -30,7 +30,7 @@ class RookPolynomial1(mn.Scene):
     def first_scene(self):
         # ========== TITLE ==========
 
-        title = mn.Text("Wielomiany szachowe", font_size=consts.FONT_LG)
+        title = mn.Text("Wielomiany szachowe", font_size=theme.FONT_LG)
         title.to_edge(mn.UP)
 
         if self.run_animations:
@@ -42,7 +42,7 @@ class RookPolynomial1(mn.Scene):
 
         tex1 = mn.Tex(
             "Wielomianem szachowym tablicy $B$ (o wymiarach $m \\times n$) nazywamy:",
-            tex_template=consts.TEX_TEMPLATE,
+            tex_template=theme.TEX_TEMPLATE,
         )
         tex1.next_to(title, mn.DOWN, buff=1)
 
@@ -55,14 +55,14 @@ class RookPolynomial1(mn.Scene):
         tex2 = mn.Tex(
             "$r_k$ to liczba możliwych ustawień $k$ wież na tablicy $B$ (na dozwolonych polach), " +
             "tak aby wzajemnie się nie atakowały.",
-            tex_template=consts.TEX_TEMPLATE,
+            tex_template=theme.TEX_TEMPLATE,
         )
         tex2.next_to(formula, mn.DOWN, buff=1)
 
         tex3 = mn.Tex(
             "$x^k$ to znacznik informujący o liczbie wież do rozstawienia, " +
             "gdzie $k$ to liczba wież.",
-            tex_template=consts.TEX_TEMPLATE,
+            tex_template=theme.TEX_TEMPLATE,
         )
         tex3.next_to(tex2, mn.DOWN, buff=0.5)
 
@@ -147,7 +147,7 @@ class RookPolynomial1(mn.Scene):
 
         title = mn.Text(
             "Wielomian szachowy przykładowej tablicy B",
-            font_size=consts.FONT_LG
+            font_size=theme.FONT_LG
         )
         title.to_edge(mn.UP)
 
@@ -200,9 +200,9 @@ class RookPolynomial1(mn.Scene):
             self.add(formula)
 
         r = [0, 0, 0]
-        for size in range(1, min(m, n) + 1):
-            configs = get_available_configurations(
-                m, n, forbidden_squares, size
+        for rooks_count in range(1, min(m, n) + 1):
+            configs = get_available_rook_configs(
+                m, n, forbidden_squares, rooks_count
             )
             if configs is not None:
                 for c in configs:
@@ -214,7 +214,7 @@ class RookPolynomial1(mn.Scene):
                         self.play(*board.place_rooks_animations(c),
                                   run_time=0.25)
 
-                    r[size-1] += 1
+                    r[rooks_count-1] += 1
 
                     if self.run_animations:
                         self.play(

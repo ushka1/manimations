@@ -1,13 +1,18 @@
 # pylint: disable=C0114, C0115, C0116, C0301
 
 
-def get_available_configurations(
+def get_available_rook_configs(
         m: int,
         n: int,
         forbidden_squares: list[tuple[int, int]],
-        size: int,
+        rooks_count: int,
 ):
-    return get_available_configurations_helper(
+    """
+    This function returns all available configurations of rooks on an m x n board
+    for a given number of rooks and a list of forbidden squares.
+    """
+
+    return _get_available_rook_configs_helper(
         0,
         0,
         m,
@@ -15,11 +20,11 @@ def get_available_configurations(
         forbidden_squares,
         [],
         [],
-        size,
+        rooks_count,
     )
 
 
-def get_available_configurations_helper(
+def _get_available_rook_configs_helper(
         i: int,
         j: int,
         m: int,
@@ -27,10 +32,10 @@ def get_available_configurations_helper(
         forbidden_squares: list[tuple[int, int]],
         reserved_rows: list[int],
         reserved_cols: list[int],
-        size: int,
+        rooks_count: int,
 ) -> list[list[tuple[int, int]]] | None:
     # configuration of given size found
-    if size == 0:
+    if rooks_count == 0:
         return []
 
     # configuration of given size cannot be found
@@ -44,7 +49,7 @@ def get_available_configurations_helper(
 
     # skip forbidden squares and reserved rows and columns
     if i in reserved_rows or j in reserved_cols or (i, j) in forbidden_squares:
-        return get_available_configurations_helper(
+        return _get_available_rook_configs_helper(
             next_i,
             next_j,
             m,
@@ -52,16 +57,16 @@ def get_available_configurations_helper(
             forbidden_squares,
             reserved_rows,
             reserved_cols,
-            size,
+            rooks_count,
         )
 
     res = []
 
     # include current square
-    if size == 1:
+    if rooks_count == 1:
         res = [[(i, j)]]
     else:
-        included = get_available_configurations_helper(
+        included = _get_available_rook_configs_helper(
             next_i,
             next_j,
             m,
@@ -69,7 +74,7 @@ def get_available_configurations_helper(
             forbidden_squares,
             reserved_rows + [i],
             reserved_cols + [j],
-            size - 1,
+            rooks_count - 1,
         )
 
         if included is not None:
@@ -77,7 +82,7 @@ def get_available_configurations_helper(
                 res.append([(i, j)] + conf)
 
     # exclude current square
-    excluded = get_available_configurations_helper(
+    excluded = _get_available_rook_configs_helper(
         next_i,
         next_j,
         m,
@@ -85,7 +90,7 @@ def get_available_configurations_helper(
         forbidden_squares,
         reserved_rows,
         reserved_cols,
-        size,
+        rooks_count,
     )
 
     if excluded is not None:

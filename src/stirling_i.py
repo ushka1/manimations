@@ -2,11 +2,11 @@
 
 import manim as mn
 
-import utils.constants as consts
-from utils.create_balls import create_balls
+import utils.theme as theme
+from utils.balls import create_balls
 from utils.cycle import Cycle
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 stirling_partitions = [
     [[0], [1, 2, 3]],
@@ -48,7 +48,7 @@ class StirlingI(mn.Scene):
     def first_scene(self):
         # ========== TITLE ==========
 
-        title = mn.Text("Liczby Stirlinga I rodzaju", font_size=consts.FONT_LG)
+        title = mn.Text("Liczby Stirlinga I rodzaju", font_size=theme.FONT_LG)
         title.to_edge(mn.UP)
 
         if self.run_animations:

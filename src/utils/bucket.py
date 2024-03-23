@@ -4,6 +4,10 @@ import manim as mn
 
 
 class Bucket():
+    """
+    A class to visually represent a bucket.
+    """
+
     def __init__(self, rows: int, cols: int):
         self.rows = rows
         self.cols = cols

@@ -4,6 +4,15 @@ import manim as mn
 
 
 class Board():
+    """
+    A class to visually represent a chess board. It allows to:
+    - fill and outline squares,
+    - place rooks (or other symbols) on squares,
+    - swap rows and columns,
+    - split the board in two,
+    - add labels to rows and columns.
+    """
+
     def __init__(self, scene: mn.Scene, rows: int, cols: int):
         self.scene = scene
         self.rows = rows

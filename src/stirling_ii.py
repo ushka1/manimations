@@ -2,11 +2,11 @@
 
 import manim as mn
 
-import utils.constants as consts
+import utils.theme as theme
+from utils.balls import create_balls
 from utils.bucket import Bucket
-from utils.create_balls import create_balls
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 stirling_partitions = [
     [[0], [1, 2, 3, 4]],
@@ -54,7 +54,7 @@ class StirlingII(mn.Scene):
 
         title = mn.Text(
             "Liczby Stirlinga II rodzaju",
-            font_size=consts.FONT_LG
+            font_size=theme.FONT_LG
         )
         title.to_edge(mn.UP)
 
@@ -72,7 +72,7 @@ class StirlingII(mn.Scene):
 
         text = mn.Text(
             "Jest to liczba rozmieszczeń n rozróżnialnych kul na k nierozróżnialnych stosach.",
-            font_size=consts.FONT_SM,
+            font_size=theme.FONT_SM,
         )
         text.next_to(formula, mn.DOWN, buff=0.5)
 

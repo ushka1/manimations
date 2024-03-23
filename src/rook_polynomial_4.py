@@ -2,10 +2,10 @@
 
 import manim as mn
 
-import utils.constants as consts
+import utils.theme as theme
 from utils.board import Board
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 
 class RookPolynomial4(mn.Scene):
@@ -25,7 +25,7 @@ class RookPolynomial4(mn.Scene):
 
         title = mn.Text(
             "Wielomiany szachowe - usunięcie wiersza i kolumny",
-            font_size=consts.FONT_LG
+            font_size=theme.FONT_LG
         )
         title.to_edge(mn.UP)
 
@@ -64,7 +64,7 @@ class RookPolynomial4(mn.Scene):
             "niech $B1$ oznacza tablicę otrzymaną z $B$, w której $s$ jest polem " +
             "zabronionym (pozostałe bez zmian), a $B2$ tablicą otrzymaną z $B$ przez " +
             "usunięcie wiersza i kolumny zawierających pole s. Wówczas:",
-            tex_template=consts.TEX_TEMPLATE
+            tex_template=theme.TEX_TEMPLATE
         )
         tex1.next_to(formula, mn.UP)
 

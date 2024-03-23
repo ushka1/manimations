@@ -2,10 +2,10 @@
 
 import manim as mn
 
-import utils.constants as consts
+import utils.theme as theme
 from utils.board import Board
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 
 class RookPolynomial2(mn.Scene):
@@ -25,7 +25,7 @@ class RookPolynomial2(mn.Scene):
 
         title = mn.Text(
             "Wielomiany szachowe - zamiana kolumn i wierszy",
-            font_size=consts.FONT_LG
+            font_size=theme.FONT_LG
         )
         title.to_edge(mn.UP)
 

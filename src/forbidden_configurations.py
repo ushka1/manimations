@@ -2,11 +2,11 @@
 
 import manim as mn
 
-import utils.constants as consts
+import utils.theme as theme
 from utils.board import Board
-from utils.get_available_configurations import get_available_configurations
+from utils.rook_polynomials import get_available_rook_configs
 
-consts.set_defaults()
+theme.set_theme_defaults()
 
 
 class ForbiddenConfigurations(mn.Scene):
@@ -24,7 +24,7 @@ class ForbiddenConfigurations(mn.Scene):
     def first_scene(self):
         # ========== TITLE ==========
 
-        title = mn.Text("Konfiguracje zabronione", font_size=consts.FONT_LG)
+        title = mn.Text("Konfiguracje zabronione", font_size=theme.FONT_LG)
         title.to_edge(mn.UP)
 
         if self.run_animations:
@@ -174,8 +174,7 @@ class ForbiddenConfigurations(mn.Scene):
 
         # ========== ROOKS PLACEMENT ==========
 
-        configs = get_available_configurations(
-            5, 4, forbidden_squares, 4)
+        configs = get_available_rook_configs(5, 4, forbidden_squares, 4)
 
         if configs is None:
             return

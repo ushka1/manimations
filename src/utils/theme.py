@@ -18,7 +18,7 @@ TEX_TEMPLATE.add_to_preamble(r"\usepackage{babel}")
 TEX_TEMPLATE.add_to_preamble(r"\usepackage{inputenc}")
 
 
-def set_defaults():
+def set_theme_defaults():
     mn.Text.set_default(font="Ubuntu", font_size=FONT_SM)
     mn.Tex.set_default(font_size=FONT_LG)
     mn.MathTex.set_default(font_size=FONT_XL)

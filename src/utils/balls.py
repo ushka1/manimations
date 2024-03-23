@@ -4,6 +4,10 @@ import manim as mn
 
 
 def create_balls(colors: list[mn.ManimColor]):
+    """
+    Create a VGroup of balls with the given colors.
+    """
+
     balls = mn.VGroup()
     for (i, color) in enumerate(colors):
         ball = mn.Circle(
