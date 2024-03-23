@@ -2,10 +2,10 @@
 
 import manim as mn
 
+import utils.constants as consts
 from utils.board import Board
 
-# mn.config.disable_caching = True
-mn.Text.set_default(font="Ubuntu", font_size=18)
+consts.set_defaults()
 
 
 class RookPolynomial2(mn.Scene):
@@ -24,7 +24,9 @@ class RookPolynomial2(mn.Scene):
         # ========== TITLE ==========
 
         title = mn.Text(
-            "Wielomiany szachowe - zamiana kolumn i wierszy", font_size=24)
+            "Wielomiany szachowe - zamiana kolumn i wierszy",
+            font_size=consts.FONT_LG
+        )
         title.to_edge(mn.UP)
 
         if self.run_animations:

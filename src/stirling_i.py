@@ -60,14 +60,12 @@ class StirlingI(mn.Scene):
 
         formula = mn.MathTex(
             r"\begin{bmatrix} \ n \ \\ \ k \ \end{bmatrix} = c(n,k)",
-            font_size=consts.FONT_XL,
         )
         formula.next_to(title, mn.DOWN, buff=0.5)
 
         text = mn.Text(
             "Jest to liczba sposobów zorganizowania n rozróżnialnych kul" +
             "w k nierozróżnialnych cyklach.",
-            font_size=consts.FONT_SM,
         )
         text.next_to(formula, mn.DOWN, buff=0.5)
 
@@ -198,7 +196,6 @@ class StirlingI(mn.Scene):
 
         title = mn.MathTex(
             r"\begin{bmatrix} \ 4 \ \\ \ 2 \ \end{bmatrix} = 11",
-            font_size=36,
         )
         title.to_edge(mn.UP)
 

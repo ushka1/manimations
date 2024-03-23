@@ -41,26 +41,28 @@ class RookPolynomial1(mn.Scene):
         # ========== DEFINITION ==========
 
         tex1 = mn.Tex(
-            "Wielomianem szachowym tablicy $B$ (o wymiarach $m \\times n$) nazywamy:"
+            "Wielomianem szachowym tablicy $B$ (o wymiarach $m \\times n$) nazywamy:",
+            tex_template=consts.TEX_TEMPLATE,
         )
         tex1.next_to(title, mn.DOWN, buff=1)
 
         formula = mn.MathTex(
             "r_B(x) = 1 + {r_1}x + {r_2}x^2 + {r_3}x^3 + \\ldots" +
             "+ {r_{min\\{m,n\\}}}x^{min\\{m,n\\}}",
-            font_size=consts.FONT_XL,
         )
         formula.next_to(tex1, mn.DOWN, buff=1)
 
         tex2 = mn.Tex(
             "$r_k$ to liczba możliwych ustawień $k$ wież na tablicy $B$ (na dozwolonych polach), " +
-            "tak aby wzajemnie sie nie atakowały."
+            "tak aby wzajemnie się nie atakowały.",
+            tex_template=consts.TEX_TEMPLATE,
         )
         tex2.next_to(formula, mn.DOWN, buff=1)
 
         tex3 = mn.Tex(
-            "$x^k$ to znacznik informujacy o liczbie wież do rozstawienia, " +
-            "gdzie $k$ to liczba wież."
+            "$x^k$ to znacznik informujący o liczbie wież do rozstawienia, " +
+            "gdzie $k$ to liczba wież.",
+            tex_template=consts.TEX_TEMPLATE,
         )
         tex3.next_to(tex2, mn.DOWN, buff=0.5)
 

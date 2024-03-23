@@ -9,7 +9,7 @@ consts.set_defaults()
 
 
 class RookPolynomial4(mn.Scene):
-    run_animations = True
+    run_animations = False
 
     def construct(self):
         # ========== SCENES ==========
@@ -60,10 +60,11 @@ class RookPolynomial4(mn.Scene):
         formula.to_edge(mn.DOWN)
 
         tex1 = mn.Tex(
-            "Niech $B$ bedzie tablica oraz $s$ pewnym jej pole dopuszczalnym. Dalej, " +
-            "niech $B1$ oznacza tablice otrzymana z $B$, w której $s$ jest polem " +
-            "zabronionym (pozostałe bez zmian), a $B2$ tablice otrzymana z $B$ przez " +
-            "usuniecie wiersza i kolumny zawierajacych pole s. Wówczas:"
+            "Niech $B$ będzie tablicą oraz $s$ pewnym jej polem dopuszczalnym. Dalej, " +
+            "niech $B1$ oznacza tablicę otrzymaną z $B$, w której $s$ jest polem " +
+            "zabronionym (pozostałe bez zmian), a $B2$ tablicą otrzymaną z $B$ przez " +
+            "usunięcie wiersza i kolumny zawierających pole s. Wówczas:",
+            tex_template=consts.TEX_TEMPLATE
         )
         tex1.next_to(formula, mn.UP)
 
@@ -161,8 +162,6 @@ class RookPolynomial4(mn.Scene):
             dashed_ratio=0.75
         )
         hor_line.set_stroke(width=5)
-
-        self.run_animations = True
 
         if self.run_animations:
             self.play(

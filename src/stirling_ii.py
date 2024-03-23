@@ -67,7 +67,6 @@ class StirlingII(mn.Scene):
 
         formula = mn.MathTex(
             r"\left\{ {n \atop k} \right\} = S(n,k)",
-            font_size=consts.FONT_XL,
         )
         formula.next_to(title, mn.DOWN, buff=0.5)
 
@@ -207,7 +206,6 @@ class StirlingII(mn.Scene):
 
         formula = mn.MathTex(
             r"\left\{ {5 \atop 2} \right\} = 15",
-            font_size=consts.FONT_XL,
         )
         formula.to_edge(mn.UP)
 
