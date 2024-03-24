@@ -11,7 +11,13 @@
 - Rook polynomials 4 - row-column removal
 <!-- - Rook polynomials 5 - highest factor calculated by usage of complement board -->
 
+## Animations
+
+Finished and rendered animations are available in the `renders/` directory.
+
 ## Rendering
 
-1. In order to render the animations, you need to have `manim` installed.
-1. Then you can run the `render.sh` script to render the animations.
+1. First install the following dependencies:
+    - `Manim`
+    - `TeXLive` (with support for Polish language)
+1. Then run the `render.sh` script to render the animations. Rendered animations will be saved in the `media/videos/` directory.
