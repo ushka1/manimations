@@ -83,13 +83,7 @@ class Board():
                 continue
 
             square = self.group[i]
-            rook_color = None
-            if len(square) > 1:
-                rook_color = square[1].get_fill_color()
-
-            square.set_fill(color, opacity)
-            if rook_color is not None:
-                square[1].set_fill(rook_color)
+            square[0].set_fill(color, opacity)
 
     def fill_squares_animations(self, positions, color: mn.ManimColor, opacity=1):
         animations = []
@@ -99,13 +93,7 @@ class Board():
                 continue
 
             square = self.group[i]
-            rook_color = None
-            if len(square) > 1:
-                rook_color = square[1].get_fill_color()
-
-            animations.append(square.animate.set_fill(color, opacity))
-            if rook_color is not None:
-                animations.append(square[1].animate.set_fill(rook_color))
+            animations.append(square[0].animate.set_fill(color, opacity))
 
         return animations
 

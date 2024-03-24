@@ -128,6 +128,8 @@ class RookPolynomial4(mn.Scene):
 
         # ========== BOARD 1 LABELS ==========
 
+        board_1_label = mn.MathTex("B1", font_size=theme.FONT_LG)
+        board_1_label.next_to(board_1.get_board(), mn.LEFT, buff=0.5)
         arrow_1 = mn.Arrow(
             board.get_board().get_left(),
             board_1.get_board().get_right(),
@@ -135,15 +137,14 @@ class RookPolynomial4(mn.Scene):
             buff=0.5
         )
 
-        board_1_label = mn.MathTex("B1", font_size=theme.FONT_LG)
-        board_1_label.next_to(board_1.get_board(), mn.LEFT, buff=0.5)
         if self.run_animations:
             self.play(
-                mn.FadeIn(board_1_label),
                 mn.FadeIn(arrow_1),
+                mn.FadeIn(board_1_label),
             )
+            self.wait(1)
         else:
-            self.add(board_1_label, arrow_1)
+            self.add(arrow_1, board_1_label)
 
         if self.run_animations:
             self.play(
@@ -206,6 +207,7 @@ class RookPolynomial4(mn.Scene):
                 mn.FadeIn(board_2_label),
                 mn.FadeIn(arrow_2)
             )
+            self.wait(1)
         else:
             self.add(board_2_label, arrow_2)
 
