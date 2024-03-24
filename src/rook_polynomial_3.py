@@ -103,14 +103,14 @@ class RookPolynomial3(mn.Scene):
                     *left_top.outline_squares_animations(mn.WHITE),
                     formula[0][6:12].animate.set_color(mn.WHITE),
                     label_b1.animate.set_color(mn.WHITE),
-                    tex1[0][59:61].animate.set_color(mn.WHITE),
+                    tex1[0][52:54].animate.set_color(mn.WHITE),
                     run_time=0.2
                 )
                 self.play(
                     *left_top.outline_squares_animations(mn.BLUE),
                     formula[0][6:12].animate.set_color(mn.BLUE),
                     label_b1.animate.set_color(mn.BLUE),
-                    tex1[0][59:61].animate.set_color(mn.BLUE),
+                    tex1[0][52:54].animate.set_color(mn.BLUE),
                     run_time=0.2
                 )
             self.wait(1)
@@ -120,14 +120,14 @@ class RookPolynomial3(mn.Scene):
                     *right_bottom.outline_squares_animations(mn.WHITE),
                     formula[0][13:19].animate.set_color(mn.WHITE),
                     label_b2.animate.set_color(mn.WHITE),
-                    tex1[0][62:64].animate.set_color(mn.WHITE),
+                    tex1[0][55:57].animate.set_color(mn.WHITE),
                     run_time=0.2
                 )
                 self.play(
                     *right_bottom.outline_squares_animations(mn.ORANGE),
                     formula[0][13:19].animate.set_color(mn.ORANGE),
                     label_b2.animate.set_color(mn.ORANGE),
-                    tex1[0][62:64].animate.set_color(mn.ORANGE),
+                    tex1[0][55:57].animate.set_color(mn.ORANGE),
                     run_time=0.2
                 )
         else:
@@ -136,12 +136,12 @@ class RookPolynomial3(mn.Scene):
             left_top.outline_squares(mn.BLUE)
             formula[0][6:12].set_color(mn.BLUE)
             label_b1.set_color(mn.BLUE)
-            tex1[0][59:61].set_color(mn.BLUE)
+            tex1[0][52:54].set_color(mn.BLUE)
 
             right_bottom.outline_squares(mn.ORANGE)
             formula[0][13:19].set_color(mn.ORANGE)
             label_b2.set_color(mn.ORANGE)
-            tex1[0][62:64].set_color(mn.ORANGE)
+            tex1[0][55:57].set_color(mn.ORANGE)
 
     def second_scene(self):
         # ========== TITLE ==========
