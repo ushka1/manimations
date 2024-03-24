@@ -1,10 +1,10 @@
-# Manim Project
+# Manimations
 
 ## Animations Preview
 
-Animations can be previewed on <https://ushka1.github.io/manimations>.
+You can preview the animations on <https://ushka1.github.io/manimations> website.
 
-Alternatively all finished and rendered animations are available in the [`renders/`](./renders/) directory.
+In addition, all completed and rendered animations can be found in the [`renders/`](./renders/) directory.
 
 ## Covered Topics
 
