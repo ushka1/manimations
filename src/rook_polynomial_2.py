@@ -67,15 +67,15 @@ class RookPolynomial2(mn.Scene):
         else:
             self.add(board.get_board())
 
-        y_labels = ["Ann", "Ed", "Joe", "Leo", "Sue"]
-        board.set_rows_labels(y_labels)
+        rows_labels = ["Ann", "Ed", "Joe", "Leo", "Sue"]
+        board.set_rows_labels(rows_labels)
         if self.run_animations:
             animations.append(mn.FadeIn(board.get_rows_labels()))
         else:
             self.add(board.get_rows_labels())
 
-        x_labels = ["Frontend", "Backend", "Testing", "AI"]
-        board.set_rows_labels(x_labels)
+        cols_labels = ["Frontend", "Backend", "Testing", "AI"]
+        board.set_rows_labels(cols_labels)
         if self.run_animations:
             animations.append(mn.FadeIn(board.get_cols_labels()))
         else:

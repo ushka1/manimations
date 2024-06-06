@@ -37,13 +37,13 @@ class RookPolynomial4(mn.Scene):
         # ========== BOARD ==========
 
         board = Board(self, 3, 4)
-        forbidden_squares = [
+        forbidden_positions = [
             (0, 0), (0, 2),
             (1, 1), (1, 2),
             (2, 0), (2, 3),
         ]
 
-        board.fill_squares(forbidden_squares, mn.GREY)
+        board.fill_squares(forbidden_positions, mn.GREY)
         board.get_board().next_to(title, mn.DOWN, buff=1)
         board.place_symbol_rooks([(1, 0)], "s")
 
@@ -109,7 +109,7 @@ class RookPolynomial4(mn.Scene):
 
         board_1 = Board(self, 3, 4)
         board_1.place_symbol_rooks([(1, 0)], "s")
-        board_1.fill_squares(forbidden_squares, mn.GREY)
+        board_1.fill_squares(forbidden_positions, mn.GREY)
         board_1.get_rook(1, 0).set_color(mn.YELLOW)
         board_1.get_board().move_to(board.get_board())
 
@@ -174,7 +174,7 @@ class RookPolynomial4(mn.Scene):
 
         board_2 = Board(self, 3, 4)
         board_2.place_symbol_rooks([(1, 0)], "s")
-        board_2.fill_squares(forbidden_squares, mn.GREY)
+        board_2.fill_squares(forbidden_positions, mn.GREY)
         board_2.get_rook(1, 0).set_color(mn.YELLOW)
         board_2.get_board().move_to(board.get_board())
 

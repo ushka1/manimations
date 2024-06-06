@@ -2,9 +2,9 @@
 
 
 def get_available_rook_configs(
-        m: int,
-        n: int,
-        forbidden_squares: list[tuple[int, int]],
+        rows: int,
+        cols: int,
+        forbidden_positions: list[tuple[int, int]],
         rooks_count: int,
 ):
     """
@@ -15,9 +15,9 @@ def get_available_rook_configs(
     return _get_available_rook_configs_helper(
         0,
         0,
-        m,
-        n,
-        forbidden_squares,
+        rows,
+        cols,
+        forbidden_positions,
         [],
         [],
         rooks_count,
@@ -27,9 +27,9 @@ def get_available_rook_configs(
 def _get_available_rook_configs_helper(
         i: int,
         j: int,
-        m: int,
-        n: int,
-        forbidden_squares: list[tuple[int, int]],
+        rows: int,
+        cols: int,
+        forbidden_positions: list[tuple[int, int]],
         reserved_rows: list[int],
         reserved_cols: list[int],
         rooks_count: int,
@@ -39,22 +39,22 @@ def _get_available_rook_configs_helper(
         return []
 
     # configuration of given size cannot be found
-    if i >= m:
+    if i >= rows:
         return None
 
     next_i = i
-    next_j = (j + 1) % n
+    next_j = (j + 1) % cols
     if next_j == 0:
         next_i += 1
 
     # skip forbidden squares and reserved rows and columns
-    if i in reserved_rows or j in reserved_cols or (i, j) in forbidden_squares:
+    if i in reserved_rows or j in reserved_cols or (i, j) in forbidden_positions:
         return _get_available_rook_configs_helper(
             next_i,
             next_j,
-            m,
-            n,
-            forbidden_squares,
+            rows,
+            cols,
+            forbidden_positions,
             reserved_rows,
             reserved_cols,
             rooks_count,
@@ -69,9 +69,9 @@ def _get_available_rook_configs_helper(
         included = _get_available_rook_configs_helper(
             next_i,
             next_j,
-            m,
-            n,
-            forbidden_squares,
+            rows,
+            cols,
+            forbidden_positions,
             reserved_rows + [i],
             reserved_cols + [j],
             rooks_count - 1,
@@ -85,9 +85,9 @@ def _get_available_rook_configs_helper(
     excluded = _get_available_rook_configs_helper(
         next_i,
         next_j,
-        m,
-        n,
-        forbidden_squares,
+        rows,
+        cols,
+        forbidden_positions,
         reserved_rows,
         reserved_cols,
         rooks_count,

@@ -8,6 +8,16 @@ from utils.rook_polynomials import get_available_rook_configs
 
 theme.set_theme_defaults()
 
+# ========== CONFIG ==========
+
+ROWS = 3
+COLS = 3
+FORBIDDEN_POSITIONS = [
+    (0, 1),
+    (1, 0), (1, 2),
+    (2, 0)
+]
+
 
 class RookPolynomial1(mn.Scene):
     run_animations = True
@@ -160,16 +170,8 @@ class RookPolynomial1(mn.Scene):
 
         animations: list[mn.FadeIn | None] = []
 
-        m = 3
-        n = 3
-        forbidden_squares = [
-            (0, 1),
-            (1, 0), (1, 2),
-            (2, 0)
-        ]
-
-        board = Board(self, m, n)
-        board.fill_squares(forbidden_squares, mn.GREY)
+        board = Board(self, ROWS, COLS)
+        board.fill_squares(FORBIDDEN_POSITIONS, mn.GREY)
         board.get_board().scale(1.5).next_to(title, mn.DOWN, buff=1.5)
         animations.append(mn.FadeIn(board.get_board()))
 
@@ -200,9 +202,9 @@ class RookPolynomial1(mn.Scene):
             self.add(formula)
 
         r = [0, 0, 0]
-        for rooks_count in range(1, min(m, n) + 1):
+        for rooks_count in range(1, min(ROWS, COLS) + 1):
             configs = get_available_rook_configs(
-                m, n, forbidden_squares, rooks_count
+                ROWS, COLS, FORBIDDEN_POSITIONS, rooks_count
             )
             if configs is not None:
                 for c in configs:

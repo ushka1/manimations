@@ -43,7 +43,7 @@ class RookPolynomial3(mn.Scene):
         # ========== BOARD ==========
 
         board = Board(self, 4, 4)
-        forbidden_squares = [
+        forbidden_positions = [
             (0, 0), (0, 2), (0, 3),
             (1, 2), (1, 3),
             (2, 0), (2, 1),
@@ -51,7 +51,7 @@ class RookPolynomial3(mn.Scene):
         ]
         board.get_board().scale(1.25)
 
-        board.fill_squares(forbidden_squares, mn.GREY)
+        board.fill_squares(forbidden_positions, mn.GREY)
         board.get_board().next_to(title, mn.DOWN, buff=1)
 
         if self.run_animations:
@@ -160,7 +160,7 @@ class RookPolynomial3(mn.Scene):
         # ========== BOARD ==========
 
         board = Board(self, 5, 5)
-        forbidden_squares = [
+        forbidden_positions = [
             (0, 0), (0, 1), (0, 3),
             (1, 0), (1, 1),
             (2, 0), (2, 2), (2, 3), (2, 4),
@@ -169,7 +169,7 @@ class RookPolynomial3(mn.Scene):
         ]
 
         board.get_board().scale(1.25)
-        board.fill_squares(forbidden_squares, mn.GREY)
+        board.fill_squares(forbidden_positions, mn.GREY)
 
         if self.run_animations:
             self.play(mn.FadeIn(board.get_board()))

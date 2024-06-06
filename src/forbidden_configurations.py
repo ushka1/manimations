@@ -132,14 +132,12 @@ class ForbiddenConfigurations(mn.Scene):
 
         # ========== HIGHLIGHT BOARD ==========
 
-        forbidden_positions = FORBIDDEN_POSITIONS
-
         if self.run_animations:
             for _ in range(5):
                 self.play(
                     text2[36:69].animate.set_color(mn.WHITE),
                     *board.fill_squares_animations(
-                        forbidden_positions,
+                        FORBIDDEN_POSITIONS,
                         mn.GREY,
                         opacity=0
                     ),
@@ -148,7 +146,7 @@ class ForbiddenConfigurations(mn.Scene):
                 self.play(
                     text2[36:69].animate.set_color(mn.GREY_A),
                     *board.fill_squares_animations(
-                        forbidden_positions,
+                        FORBIDDEN_POSITIONS,
                         mn.GREY
                     ),
                     run_time=0.2
@@ -157,7 +155,7 @@ class ForbiddenConfigurations(mn.Scene):
         else:
             text2[36:69].set_color(mn.GREY_A)
             board.fill_squares(
-                forbidden_positions,
+                FORBIDDEN_POSITIONS,
                 mn.GREY
             )
 
@@ -185,7 +183,8 @@ class ForbiddenConfigurations(mn.Scene):
         # ========== ROOKS PLACEMENT ==========
 
         configs = get_available_rook_configs(
-            ROWS, COLS, forbidden_positions, ROOKS)
+            ROWS, COLS, FORBIDDEN_POSITIONS, ROOKS
+        )
 
         if configs is None:
             return
