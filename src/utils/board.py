@@ -18,8 +18,8 @@ class Board():
         self.rows = rows
         self.cols = cols
         self.group = mn.VGroup()
-        self.x_labels = mn.VGroup()
-        self.y_labels = mn.VGroup()
+        self.rows_labels = mn.VGroup()
+        self.cols_labels = mn.VGroup()
 
         for _ in range(rows):
             for _ in range(cols):
@@ -32,7 +32,8 @@ class Board():
     def get_board(self):
         return self.group
 
-    def set_y_labels(self, labels):
+    def set_rows_labels(self, labels):
+        labels = labels[:self.rows]
         texts = []
         for (i, label) in enumerate(labels):
             texts.append(mn.Text(label))
@@ -42,13 +43,14 @@ class Board():
             container = mn.Rectangle(height=0.5, width=max_width)
             container.add(text.align_to(container, mn.RIGHT))
             container.set_stroke(width=0)
-            self.y_labels.add(container)
-            self.y_labels[i].next_to(self.group[i * self.cols], mn.LEFT)
+            self.rows_labels.add(container)
+            self.rows_labels[i].next_to(self.group[i * self.cols], mn.LEFT)
 
-    def get_y_labels(self):
-        return self.y_labels
+    def get_rows_labels(self):
+        return self.rows_labels
 
-    def set_x_labels(self, labels):
+    def set_cols_labels(self, labels):
+        labels = labels[:self.cols]
         texts = []
         for (i, label) in enumerate(labels):
             texts.append(mn.Text(label))
@@ -59,11 +61,11 @@ class Board():
             container.add(text.align_to(container, mn.RIGHT))
             container.set_stroke(width=0)
             container.rotate(-mn.PI / 2)
-            self.x_labels.add(container)
-            self.x_labels[i].next_to(self.group[i], mn.UP)
+            self.cols_labels.add(container)
+            self.cols_labels[i].next_to(self.group[i], mn.UP)
 
-    def get_x_labels(self):
-        return self.x_labels
+    def get_cols_labels(self):
+        return self.cols_labels
 
     def outline_squares(self, color: mn.ManimColor, opacity=1):
         for square in self.group:
@@ -214,10 +216,10 @@ class Board():
         self.group[i * self.cols:(i + 1) * self.cols] = row2  # type: ignore
         self.group[j * self.cols:(j + 1) * self.cols] = row1  # type: ignore
 
-        label1 = self.y_labels[i]
-        label2 = self.y_labels[j]
-        self.y_labels[i] = label2  # type: ignore
-        self.y_labels[j] = label1  # type: ignore
+        label1 = self.rows_labels[i]
+        label2 = self.rows_labels[j]
+        self.rows_labels[i] = label2  # type: ignore
+        self.rows_labels[j] = label1  # type: ignore
 
         self.group.arrange_in_grid(self.rows, self.cols, buff=0)
         label1.next_to(row1, mn.LEFT)
@@ -229,10 +231,10 @@ class Board():
         self.group[i * self.cols:(i + 1) * self.cols] = row2  # type: ignore
         self.group[j * self.cols:(j + 1) * self.cols] = row1  # type: ignore
 
-        label1 = self.y_labels[i]
-        label2 = self.y_labels[j]
-        self.y_labels[i] = label2  # type: ignore
-        self.y_labels[j] = label1  # type: ignore
+        label1 = self.rows_labels[i]
+        label2 = self.rows_labels[j]
+        self.rows_labels[i] = label2  # type: ignore
+        self.rows_labels[j] = label1  # type: ignore
 
         group1 = mn.VGroup(*row1, label1)
         group2 = mn.VGroup(*row2, label2)
@@ -246,10 +248,10 @@ class Board():
         self.group[i::self.cols] = col2  # type: ignore
         self.group[j::self.cols] = col1  # type: ignore
 
-        label1 = self.x_labels[i]
-        label2 = self.x_labels[j]
-        self.x_labels[i] = label2  # type: ignore
-        self.x_labels[j] = label1  # type: ignore
+        label1 = self.cols_labels[i]
+        label2 = self.cols_labels[j]
+        self.cols_labels[i] = label2  # type: ignore
+        self.cols_labels[j] = label1  # type: ignore
 
         self.group.arrange_in_grid(self.rows, self.cols, buff=0)
         label1.next_to(col1, mn.UP)
@@ -261,10 +263,10 @@ class Board():
         self.group[i::self.cols] = col2  # type: ignore
         self.group[j::self.cols] = col1  # type: ignore
 
-        label1 = self.x_labels[i]
-        label2 = self.x_labels[j]
-        self.x_labels[i] = label2  # type: ignore
-        self.x_labels[j] = label1  # type: ignore
+        label1 = self.cols_labels[i]
+        label2 = self.cols_labels[j]
+        self.cols_labels[i] = label2  # type: ignore
+        self.cols_labels[j] = label1  # type: ignore
 
         group1 = mn.VGroup(*col1, label1)
         group2 = mn.VGroup(*col2, label2)

@@ -25,7 +25,7 @@ class RookPolynomial1(mn.Scene):
         if self.run_animations:
             self.wait(5)
             self.play(mn.FadeOut(*self.mobjects))
-        # self.remove(*self.mobjects)
+        self.remove(*self.mobjects)
 
     def first_scene(self):
         # ========== TITLE ==========

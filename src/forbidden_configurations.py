@@ -9,6 +9,22 @@ from utils.rook_polynomials import get_available_rook_configs
 theme.set_theme_defaults()
 
 
+# ========== CONFIG ==========
+
+ROWS = 5
+COLS = 4
+FORBIDDEN_POSITIONS = [
+    (0, 1), (0, 2),
+    (1, 0), (1, 3),
+    (2, 1),
+    (3, 0), (3, 2),
+    (4, 1),
+]
+ROWS_LABELS = ["Ann", "Ed", "Joe", "Leo", "Sue"]
+COS_LABELS = ["Frontend", "Backend", "Testing", "AI"]
+ROOKS = min(ROWS, COLS)
+
+
 class ForbiddenConfigurations(mn.Scene):
     run_animations = True
 
@@ -56,18 +72,18 @@ class ForbiddenConfigurations(mn.Scene):
 
         animations: list[mn.FadeIn | None] = []
 
-        board = Board(self, 5, 4)
+        board = Board(self, ROWS, COLS)
         board.get_board().next_to(text2, mn.DOWN, buff=1.75)
         animations.append(mn.FadeIn(board.get_board()))
 
-        board.set_y_labels(["Ann", "Ed", "Joe", "Leo", "Sue"])
-        m_labels_mobjects = board.get_y_labels()
-        for label in board.get_y_labels():
+        board.set_rows_labels(ROWS_LABELS)
+        m_labels_mobjects = board.get_rows_labels()
+        for label in board.get_rows_labels():
             animations.append(mn.FadeIn(label))
 
-        board.set_x_labels(["Frontend", "Backend", "Testing", "AI"])
-        n_labels_mobjects = board.get_x_labels()
-        for label in board.get_x_labels():
+        board.set_cols_labels(COS_LABELS)
+        n_labels_mobjects = board.get_cols_labels()
+        for label in board.get_cols_labels():
             animations.append(mn.FadeIn(label))
 
         if self.run_animations:
@@ -116,20 +132,14 @@ class ForbiddenConfigurations(mn.Scene):
 
         # ========== HIGHLIGHT BOARD ==========
 
-        forbidden_squares = [
-            (0, 1), (0, 2),
-            (1, 0), (1, 3),
-            (2, 1),
-            (3, 0), (3, 2),
-            (4, 1),
-        ]
+        forbidden_positions = FORBIDDEN_POSITIONS
 
         if self.run_animations:
             for _ in range(5):
                 self.play(
                     text2[36:69].animate.set_color(mn.WHITE),
                     *board.fill_squares_animations(
-                        forbidden_squares,
+                        forbidden_positions,
                         mn.GREY,
                         opacity=0
                     ),
@@ -138,7 +148,7 @@ class ForbiddenConfigurations(mn.Scene):
                 self.play(
                     text2[36:69].animate.set_color(mn.GREY_A),
                     *board.fill_squares_animations(
-                        forbidden_squares,
+                        forbidden_positions,
                         mn.GREY
                     ),
                     run_time=0.2
@@ -147,7 +157,7 @@ class ForbiddenConfigurations(mn.Scene):
         else:
             text2[36:69].set_color(mn.GREY_A)
             board.fill_squares(
-                forbidden_squares,
+                forbidden_positions,
                 mn.GREY
             )
 
@@ -174,7 +184,8 @@ class ForbiddenConfigurations(mn.Scene):
 
         # ========== ROOKS PLACEMENT ==========
 
-        configs = get_available_rook_configs(5, 4, forbidden_squares, 4)
+        configs = get_available_rook_configs(
+            ROWS, COLS, forbidden_positions, ROOKS)
 
         if configs is None:
             return
