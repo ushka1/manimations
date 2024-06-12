@@ -1,8 +1,20 @@
 #!/bin/sh
 
+# STIRLING NUMBERS
+
 manim -pqh ./src/stirling_i.py StirlingI
 
+manim -pqh ./src/stirling_i_recurrence.py StirlingIRecurrence
+
+manim -pqh ./src/stirling_i_compairsion.py StirlingICompairsion
+
 manim -pqh ./src/stirling_ii.py StirlingII
+
+manim -pqh ./src/stirling_ii_recurrence.py StirlingIIRecurrence
+
+manim -pqh ./src/stirling_ii_compairsion.py StirlingIICompairsion
+
+# ROOK POLYNOMIALS
 
 manim -pqh ./src/forbidden_configurations.py ForbiddenConfigurations
 
